@@ -19,7 +19,7 @@ export function FlowDiagram({ actors, steps, current, playing, duration, replayK
   const visible = [...actors];
   for (const step of steps) {
     for (const id of [step.from, step.to]) {
-      if (!visible.some((actor) => actor.id === id)) visible.push({ id, label: id, role: "Kết nối trước đó" });
+      if (!visible.some((actor) => actor.id === id)) visible.push({ id, label: `#${id.slice(0, 6)}`, role: "Ngoài danh sách hiện tại" });
     }
   }
   const actorLabel = (id: string) => visible.find((actor) => actor.id === id)?.label ?? id;
@@ -42,8 +42,8 @@ export function FlowDiagram({ actors, steps, current, playing, duration, replayK
             <span className="flow-actor-icon"><Icon size={21} strokeWidth={1.6} aria-hidden="true" /></span>
             <span className="flow-actor-role">{actor.role}</span>
             <strong>{actor.label}</strong>
-            <span className="flow-actor-state">{actor.state ? `Hiện tại: ${actor.state}` : ""}</span>
-            <span className="flow-actor-action">{sending && receiving ? "Xử lý tại đây" : sending ? "Bên gửi" : receiving ? "Bên nhận" : "—"}</span>
+            <span className="flow-actor-state">{actor.state ? `Trạng thái: ${actor.state}` : ""}</span>
+            <span className="flow-actor-action">{sending && receiving ? "Xử lý nội bộ" : sending ? "Bên gửi" : receiving ? "Bên nhận" : "—"}</span>
           </div>;
         })}
       </div>
@@ -54,8 +54,8 @@ export function FlowDiagram({ actors, steps, current, playing, duration, replayK
           <span key={`${replayKey}-${current}-${duration}`} className="flow-packet-track" style={{ animationDuration: `${duration}ms`, animationPlayState: playing ? "running" : "paused" }}><span className="flow-packet" /></span>
         </div>)}
       </div>
-      <div className="flow-direction">{active ? <><span>{actorLabel(active.from)}</span>{local ? <Settings size={14} aria-hidden="true" /> : <ArrowRight size={16} aria-hidden="true" />}<span>{local ? "Xử lý nội bộ" : actorLabel(active.to)}</span></> : <span>Client và server chưa trao đổi dữ liệu</span>}</div>
-      <ol ref={list} className="flow-step-list" tabIndex={steps.length ? 0 : -1} aria-label="Các bước trong lần trao đổi">
+      <div className="flow-direction">{active ? <><span>{actorLabel(active.from)}</span>{local ? <Settings size={14} aria-hidden="true" /> : <ArrowRight size={16} aria-hidden="true" />}<span>{local ? "Xử lý nội bộ" : actorLabel(active.to)}</span></> : <span>Chưa phát sinh trao đổi dữ liệu</span>}</div>
+      <ol ref={list} className="flow-step-list" tabIndex={steps.length ? 0 : -1} aria-label="Trình tự các bước">
         {steps.map((step, index) => <li key={index} className={index === current ? "flow-step-current" : index < current ? "flow-step-past" : ""} aria-current={index === current ? "step" : undefined}>
           <span className="flow-step-number mono">{index + 1}</span><span><strong>{step.label}</strong><small>{actorLabel(step.from)} {step.from === step.to ? "· xử lý nội bộ" : `→ ${actorLabel(step.to)}`}</small></span>
         </li>)}

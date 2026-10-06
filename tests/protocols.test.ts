@@ -7,10 +7,11 @@ import {
   ChatMessageSchema,
   ChatPresenceSchema,
   ChatWelcomeSchema,
-  DeliverySchema,
   NotificationBatchSchema,
+  PaymentAcceptedSchema,
   PaymentSchema,
   ProgressSchema,
+  WebhookLogSchema,
 } from "../src/lib/protocol-contracts";
 
 const base = process.env.BASE_URL ?? "http://127.0.0.1:3000";
@@ -59,12 +60,14 @@ test(
     assert.equal(publication.status, 200);
     const batch = await pending;
     assert.equal(batch.timedOut, false);
+    assert.equal(batch.held, true, "response after publication comes from a held request");
     assert.equal(batch.events[0]?.text, "Một thông báo mới");
     assert.equal(batch.cursor, 1);
     await post("/api/long-polling", { session, action: "publish", text: "Thông báo thứ hai" });
     const next = await fetch(
       `${base}/api/long-polling?session=${session}&after=${batch.cursor}`,
     ).then((r) => r.json());
+    assert.equal(next.held, false, "pending notification is returned without holding");
     assert.equal(next.events.length, 1);
     assert.equal(next.events[0].text, "Thông báo thứ hai");
     const reset = await post("/api/long-polling", { session, action: "reset" }).then((r) =>
@@ -87,6 +90,7 @@ test(
     const batch = NotificationBatchSchema.parse(await response.json());
     assert.equal(response.status, 200);
     assert.equal(batch.timedOut, true);
+    assert.equal(batch.held, true);
     assert.deepEqual(batch.events, []);
     assert.ok(Date.now() - started >= 19_500, "timeout must represent an actual held request");
     await post("/api/long-polling", { session, action: "publish", text: "Sau timeout" });
@@ -164,7 +168,7 @@ test(
 );
 
 test(
-  "webhook posts to the receiver, acknowledges, deduplicates, and resets",
+  "webhook is sent after the payment response, acknowledged, deduplicated, and reset",
   { timeout: 20_000 },
   async () => {
     const session = randomUUID();
@@ -172,18 +176,44 @@ test(
       fetch(`${base}/api/webhook/status?session=${session}`)
         .then((r) => r.json())
         .then((data) => PaymentSchema.parse(data));
+    const received = () =>
+      fetch(`${base}/api/webhook/log?session=${session}`)
+        .then((r) => r.json())
+        .then((data) => WebhookLogSchema.parse(data).webhooks);
+    async function until<T>(read: () => Promise<T>, done: (value: T) => boolean) {
+      for (let attempt = 0; attempt < 80; attempt += 1) {
+        const value = await read();
+        if (done(value)) return value;
+        await delay(100);
+      }
+      throw new Error("condition not reached");
+    }
     assert.equal((await status()).status, "pending");
     const response = await post("/api/webhook/provider", { session, action: "pay" });
-    assert.equal(response.status, 200);
-    const delivery = DeliverySchema.parse(await response.json());
-    assert.equal(delivery.deliveryStatus, 200);
-    const paid = await status();
-    assert.equal(paid.status, "paid");
-    assert.equal(paid.eventId, delivery.eventId);
-    const repeated = await post("/api/webhook/provider", { session, action: "pay" });
-    assert.equal(repeated.status, 200);
+    assert.equal(response.status, 202);
+    const accepted = PaymentAcceptedSchema.parse(await response.json());
+    assert.equal((await status()).status, "pending", "payment response must not wait for the webhook");
+    assert.equal((await post("/api/webhook/provider", { session, action: "pay" })).status, 409);
+    const paid = await until(status, (payment) => payment.status === "paid");
+    assert.equal(paid.eventId, accepted.eventId);
+    assert.deepEqual(
+      (await received()).map((item) => [item.status, item.outcome]),
+      [[200, "processed"]],
+    );
+    // Gửi lại cùng sự kiện: bên nhận xác nhận nhưng không áp dụng thanh toán lần hai.
+    const repeated = await until(
+      () => post("/api/webhook/provider", { session, action: "pay" }),
+      (r) => r.status !== 409,
+    );
+    assert.equal(repeated.status, 202);
+    assert.equal(PaymentAcceptedSchema.parse(await repeated.json()).eventId, accepted.eventId);
+    const log = await until(received, (items) => items.length === 2);
+    assert.equal(log[1]?.outcome, "duplicate");
     assert.deepEqual(await status(), paid, "duplicate event must not apply the payment twice");
-    await post("/api/webhook/provider", { session, action: "reset" });
+    await until(
+      () => post("/api/webhook/provider", { session, action: "reset" }),
+      (r) => r.status === 200,
+    );
     assert.equal((await status()).status, "pending");
   },
 );

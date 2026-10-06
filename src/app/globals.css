@@ -698,16 +698,6 @@ p {
   font: 0.625rem/1.6 var(--mono);
   color: var(--muted);
 }
-.activity-foot {
-  display: flex;
-  gap: 0.4rem;
-  align-items: center;
-  border-top: 1px solid var(--line);
-  padding: 0.7rem 1.25rem;
-  font-size: 0.6875rem;
-  letter-spacing: 0.02em;
-  color: var(--muted);
-}
 .panel-divider {
   border-top: 1px solid var(--line);
   margin: 1.5rem 0;
@@ -764,9 +754,6 @@ textarea::placeholder {
   color: var(--foreground);
   font-size: 0.875rem;
   font-weight: 550;
-}
-.demo-empty span {
-  font-size: 0.8125rem;
 }
 .notification-list {
   list-style: none;

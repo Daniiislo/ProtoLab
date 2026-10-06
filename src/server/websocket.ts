@@ -42,7 +42,7 @@ export function createChatServer() {
         const parsed = ChatInputSchema.safeParse(input);
         if (!parsed.success) {
           client.send(
-            JSON.stringify({ error: "Tên tối đa 32 ký tự; tin nhắn từ 1 đến 500 ký tự." }),
+            JSON.stringify({ error: "Tên hiển thị tối đa 32 ký tự; tin nhắn phải có từ 1 đến 500 ký tự." }),
           );
           return;
         }

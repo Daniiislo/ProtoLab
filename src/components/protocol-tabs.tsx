@@ -16,45 +16,45 @@ const protocols = [
     id: "polling",
     name: "Polling",
     icon: RefreshCw,
-    title: "Đơn hàng đang ở đâu?",
+    title: "Truy vấn định kỳ trạng thái đơn hàng",
     description:
-      "Client hỏi định kỳ. Server trả lời mỗi lần. Thử đổi trạng thái đơn để thấy khoảng chờ giữa hai lần kiểm tra.",
+      "Client gửi request theo chu kỳ cố định; server trả response chứa trạng thái hiện tại cho từng request.",
     badge: "HTTP · ĐỊNH KỲ",
-    direction: "Client hỏi",
-    destination: "Server trả lời",
+    direction: "Client gửi request",
+    destination: "Server trả response",
     component: PollingDemo,
   },
   {
     id: "long-polling",
     name: "Long polling",
     icon: Bell,
-    title: "Có tin mới, báo tôi nhé.",
+    title: "Giữ request chờ thông báo",
     description:
-      "Client gửi một request và chờ. Khi có thông báo, server trả lời ngay — rồi một lượt chờ mới bắt đầu.",
+      "Nếu chưa có thông báo mới, server giữ request cho đến khi phát sinh thông báo hoặc timeout; client gửi request kế tiếp ngay sau mỗi response.",
     badge: "HTTP · GIỮ REQUEST",
-    direction: "Client chờ",
-    destination: "Server có tin mới",
+    direction: "Client gửi request chờ",
+    destination: "Server trả response khi có sự kiện hoặc timeout",
     component: LongPollingDemo,
   },
   {
     id: "sse",
     name: "SSE",
     icon: Waves,
-    title: "Tiến độ, từng bước một.",
+    title: "Truyền tiến độ qua luồng sự kiện",
     description:
-      "Một kết nối mở. Server liên tục đẩy tiến độ xử lý báo cáo về trình duyệt cho đến khi hoàn thành.",
+      "Client gửi một GET request; server giữ response mở và ghi lần lượt từng event tiến độ vào response đó cho đến khi tác vụ hoàn tất.",
     badge: "HTTP · EVENT STREAM",
-    direction: "Server phát sự kiện",
-    destination: "Client nhận",
+    direction: "Server đẩy sự kiện",
+    destination: "Client tiếp nhận",
     component: SseDemo,
   },
   {
     id: "websocket",
     name: "WebSocket",
     icon: ArrowLeftRight,
-    title: "Cuộc trò chuyện hai chiều.",
+    title: "Giao tiếp hai chiều trên một kết nối",
     description:
-      "Cùng một kết nối, cả hai phía đều có thể gửi tin. Mở thêm một cửa sổ và trò chuyện trong cùng phòng.",
+      "Client và server trao đổi thông điệp theo cả hai chiều trên một kết nối được duy trì liên tục.",
     badge: "WS · HAI CHIỀU",
     direction: "Client gửi & nhận",
     destination: "Server gửi & nhận",
@@ -64,9 +64,9 @@ const protocols = [
     id: "webhook",
     name: "Webhook",
     icon: Cable,
-    title: "Thanh toán xong. Đã báo cửa hàng.",
+    title: "Thông báo sự kiện giữa hai hệ thống",
     description:
-      "Nhà cung cấp gửi một HTTP POST tới backend cửa hàng. Một sự kiện ở hệ thống này kích hoạt thay đổi ở hệ thống khác.",
+      "Khi phát sinh sự kiện, hệ thống nguồn gửi HTTP POST request tới endpoint đã đăng ký của hệ thống đích.",
     badge: "HTTP POST · SERVER → SERVER",
     direction: "Nhà cung cấp",
     destination: "Backend cửa hàng",
@@ -118,7 +118,7 @@ export function ProtocolTabs() {
             </div>
             <Button variant="outline" onClick={reset} disabled={!session}>
               <RotateCcw size={15} />
-              Làm lại
+              Đặt lại
             </Button>
           </div>
           <div className="connection-strip">
@@ -130,13 +130,13 @@ export function ProtocolTabs() {
               <ArrowRight size={18} aria-hidden="true" />
             )}
             <span>{protocol.destination}</span>
-            <span className="connection-note">localhost · dữ liệu giả lập</span>
+            <span className="connection-note">localhost · dữ liệu mô phỏng</span>
           </div>
           {session ? (
             <protocol.component key={session} session={session} />
           ) : (
             <div className="preparing" role="status">
-              Đang chuẩn bị phiên demo…
+              Đang khởi tạo phiên…
             </div>
           )}
         </TabsContent>

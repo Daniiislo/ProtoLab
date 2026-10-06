@@ -4,22 +4,25 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Bell, Play, Send, Square } from "lucide-react";
 import type { z } from "zod";
 import { NotificationBatchSchema } from "@/lib/protocol-contracts";
-import { ActivityLog, useActivity } from "@/components/activity-log";
+import { ActivityLog, useActivity, type FlowStep } from "@/components/activity-log";
+import { readError } from "@/lib/read-error";
 import { Status } from "@/components/demo-status";
 import { Button } from "@/components/ui/button";
 
 type Notification = z.infer<typeof NotificationBatchSchema>["events"][number];
 
 export function LongPollingDemo({ session }: { session: string }) {
-  const { entries, log } = useActivity();
+  const { entries, log, extend } = useActivity();
   const [listening, setListening] = useState(false);
   const [publishing, setPublishing] = useState(false);
-  const [text, setText] = useState("Đơn hàng của bạn đã sẵn sàng!");
+  const [text, setText] = useState("Đơn hàng #PL-2026 đã được xác nhận.");
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [error, setError] = useState("");
   const request = useRef<AbortController | null>(null);
   const publishRequest = useRef<AbortController | null>(null);
   const cursor = useRef(0);
+  // Entry của request GET đang được server giữ; phản hồi sẽ ghi tiếp vào đúng entry này.
+  const waiting = useRef<string | null>(null);
 
   useEffect(
     () => () => {
@@ -33,7 +36,11 @@ export function LongPollingDemo({ session }: { session: string }) {
     request.current?.abort();
     request.current = null;
     setListening(false);
-    log("info", "Đã dừng nhận", "Request đang chờ đã được hủy.");
+    if (waiting.current) extend(waiting.current, "info", "Dừng nhận thông báo", "Request đang chờ đã bị hủy.", [
+      { from: "client", to: "server", label: "Hủy request đang chờ · đóng kết nối", detail: "AbortController.abort()" },
+      { from: "server", to: "server", label: "Giải phóng request đang giữ", detail: "request.signal: abort → hủy timeout 20 giây, xóa request khỏi danh sách chờ" },
+    ]);
+    waiting.current = null;
   }
 
   async function start() {
@@ -42,48 +49,86 @@ export function LongPollingDemo({ session }: { session: string }) {
     request.current = controller;
     setListening(true);
     setError("");
-    let previousBatch: z.infer<typeof NotificationBatchSchema> | null = null;
     try {
       // Chỉ hỏi tiếp sau khi request trước đã nhận dữ liệu hoặc hết 20 giây.
-      while (!controller.signal.aborted) {
-        log("send", "Đang chờ thông báo", `GET /api/long-polling · after=${cursor.current}`, [
-          ...(previousBatch ? [{ from: "server", to: "client", label: previousBatch.timedOut ? "Request trước đã hết 20 giây chờ" : "Đã trả thông báo qua request trước", detail: JSON.stringify(previousBatch) }] : []),
-          { from: "client", to: "server", label: previousBatch ? "Mở request kế tiếp" : "Mở request nhận thông báo", detail: `GET /api/long-polling · after=${cursor.current}` },
-          { from: "server", to: "server", label: "Giữ request khi chưa có tin", detail: "Cơ chế: trả lời khi có sự kiện hoặc sau tối đa 20 giây." },
+      for (let first = true; !controller.signal.aborted; first = false) {
+        const query = `GET /api/long-polling?after=${cursor.current}`;
+        // Entry "info" (không phải "send") để bảng luồng hiện cả lúc request đang được giữ.
+        const id = log("info", "Đang chờ thông báo", query, [
+          { from: "client", to: "server", label: first ? "Gửi request nhận thông báo" : "Gửi request kế tiếp", detail: query },
         ]);
-        const response = await fetch(
-          `/api/long-polling?session=${session}&after=${cursor.current}`,
-          {
+        waiting.current = id;
+        const holdStep: FlowStep = { from: "server", to: "server", label: "Chưa có thông báo sau cursor · giữ request", detail: "Server trả response khi phát sinh thông báo mới hoặc khi timeout sau 20 giây." };
+        // Server chỉ giữ request khi chưa có dữ liệu; response chưa về sau 300 ms nghĩa là request đang được giữ.
+        let holding = false;
+        const hold = setTimeout(() => {
+          holding = true;
+          extend(id, "info", "Đang chờ thông báo", query, [holdStep]);
+        }, 300);
+        let response: Response;
+        try {
+          response = await fetch(`/api/long-polling?session=${session}&after=${cursor.current}`, {
             signal: controller.signal,
             cache: "no-store",
-          },
-        );
-        if (!response.ok) throw new Error(`Không nhận được thông báo (HTTP ${response.status}).`);
+          });
+        } finally {
+          clearTimeout(hold);
+        }
+        if (!response.ok) {
+          const message = await readError(response, `Server từ chối request (HTTP ${response.status}).`);
+          if (controller.signal.aborted) return;
+          // Cursor vượt trạng thái server (server khởi động lại): lần nhận sau bắt đầu lại từ 0.
+          if (response.status === 409) {
+            cursor.current = 0;
+            // ID thông báo phía server bắt đầu lại từ 1; bỏ danh sách cũ để không trùng.
+            setNotifications([]);
+          }
+          waiting.current = null;
+          setError(message);
+          extend(id, "error", `HTTP ${response.status} · dừng nhận thông báo`, message, [
+            { from: "server", to: "client", label: `${response.status} · request bị từ chối`, detail: message },
+            { from: "client", to: "client", label: "Dừng nhận thông báo", detail: message },
+          ]);
+          return;
+        }
         const batch = NotificationBatchSchema.parse(await response.json());
         if (controller.signal.aborted) return;
+        waiting.current = null;
         cursor.current = batch.cursor;
-        previousBatch = batch;
+        const held = batch.held && !holding ? [holdStep] : [];
         if (batch.events.length) {
           setNotifications((items) => [...batch.events.slice().reverse(), ...items].slice(0, 50));
-          log("receive", `${batch.events.length} thông báo mới`, JSON.stringify(batch), [
-            { from: "server", to: "server", label: "Có thông báo · kết thúc chờ", detail: "Server dùng request đang mở để trả sự kiện." },
+          const texts = batch.events.map((item) => item.text).join("\n");
+          extend(id, "receive", `${batch.events.length} thông báo mới`, JSON.stringify(batch), [
+            ...held,
+            batch.held
+              ? { from: "server", to: "server", label: "Phát sinh thông báo mới · kết thúc giữ request", detail: texts }
+              : { from: "server", to: "server", label: "Đã có thông báo sau cursor · trả response ngay", detail: texts },
             { from: "server", to: "client", label: `200 OK · ${batch.events.length} thông báo`, detail: JSON.stringify(batch) },
-            { from: "client", to: "client", label: "Cập nhật hộp thư", detail: "Client sẽ mở một request mới để tiếp tục chờ." },
+            { from: "client", to: "client", label: "Hiển thị thông báo · gửi request kế tiếp", detail: "Response kết thúc request hiện tại; client lập tức gửi request mới." },
           ]);
         } else if (batch.timedOut) {
-          log("receive", "Hết 20 giây chờ", "Chưa có sự kiện. Client sẽ mở request tiếp theo.", [
-            { from: "server", to: "client", label: "200 OK · hết thời gian chờ", detail: JSON.stringify(batch) },
-            { from: "client", to: "client", label: "Chuẩn bị hỏi tiếp", detail: "Timeout là một phản hồi bình thường, không phải lỗi." },
+          extend(id, "receive", "Timeout", "Không có thông báo mới trong 20 giây.", [
+            ...held,
+            { from: "server", to: "client", label: "200 OK · timeout, không có thông báo mới", detail: JSON.stringify(batch) },
+            { from: "client", to: "client", label: "Gửi request kế tiếp", detail: "Timeout là response hợp lệ, không phải lỗi." },
           ]);
         } else {
-          log("info", "Phiên đã được đặt lại", "Client tiếp tục chờ sự kiện mới.");
+          extend(id, "receive", "Không có thông báo mới", JSON.stringify(batch), [
+            ...held,
+            { from: "server", to: "client", label: "200 OK · không có thông báo mới", detail: JSON.stringify(batch) },
+          ]);
         }
       }
     } catch (cause) {
       if (!controller.signal.aborted) {
-        const message = cause instanceof Error ? cause.message : "Không thể kết nối. Hãy thử lại.";
+        const message = cause instanceof Error ? cause.message : "Không thể kết nối tới server.";
         setError(message);
-        log("error", "Kết nối bị gián đoạn", message);
+        if (waiting.current) extend(waiting.current, "error", "Kết nối bị gián đoạn", message, [
+          { from: "client", to: "client", label: "Request thất bại · dừng nhận thông báo", detail: message },
+        ]);
+        else log("error", "Kết nối bị gián đoạn", message);
+        waiting.current = null;
       }
     } finally {
       if (request.current === controller) {
@@ -101,24 +146,22 @@ export function LongPollingDemo({ session }: { session: string }) {
     setPublishing(true);
     setError("");
     try {
-      log("send", "Tạo sự kiện trên server", "POST /api/long-polling", [
-        { from: "client", to: "server", label: "Giả lập một sự kiện mới", detail: JSON.stringify({ action: "publish", text: text.trim() }) },
-      ]);
+      // Phần giả lập phía server: không vẽ thành luồng riêng, thông báo đi về qua request GET đang được giữ.
       const response = await fetch("/api/long-polling", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session, action: "publish", text: text.trim() }),
         signal: controller.signal,
       });
-      if (!response.ok) throw new Error(`Không tạo được thông báo (HTTP ${response.status}).`);
+      if (!response.ok) throw new Error(await readError(response, `Không thể tạo thông báo (HTTP ${response.status}).`));
       NotificationBatchSchema.parse(await response.json());
       if (!controller.signal.aborted)
-        log("info", "Server đã có sự kiện", "Thông báo được chuyển qua request đang chờ.");
+        log("info", "Server phát sinh thông báo mới", text.trim());
     } catch (cause) {
       if (!controller.signal.aborted) {
-        const message = cause instanceof Error ? cause.message : "Không tạo được thông báo.";
+        const message = cause instanceof Error ? cause.message : "Không thể tạo thông báo.";
         setError(message);
-        log("error", "Gửi thất bại", message);
+        log("error", "Tạo thông báo thất bại", message);
       }
     } finally {
       if (!controller.signal.aborted) setPublishing(false);
@@ -128,21 +171,17 @@ export function LongPollingDemo({ session }: { session: string }) {
 
   return (
     <div className="demo-grid">
-      <section className="experiment-panel" aria-label="Demo long polling">
+      <section className="experiment-panel" aria-label="Thí nghiệm long polling">
         <div className="panel-topline">
-          <span className="section-label">HỘP THƯ CỦA BẠN</span>
+          <span className="section-label">HỘP THƯ THÔNG BÁO</span>
           <Bell size={19} aria-hidden="true" />
         </div>
         <div className="status-row">
-          <h3 className="panel-title">Chờ một tin mới.</h3>
+          <h3 className="panel-title">Thông báo đã nhận</h3>
           <Status tone={error ? "error" : listening ? "live" : "idle"}>
-            {error ? "Có lỗi" : listening ? "Đang chờ" : "Chưa kết nối"}
+            {error ? "Lỗi" : listening ? "Đang chờ" : "Chưa kết nối"}
           </Status>
         </div>
-        <p className="muted">
-          Bật nhận thông báo, rồi tạo một sự kiện ở phía dưới. Hộp thư sẽ cập nhật ngay khi server
-          có tin.
-        </p>
         <div className="controls">
           <Button type="button" onClick={listening ? stop : start}>
             {listening ? (
@@ -150,16 +189,14 @@ export function LongPollingDemo({ session }: { session: string }) {
             ) : (
               <Play size={15} aria-hidden="true" />
             )}
-            {listening ? "Dừng nhận" : "Bắt đầu nhận"}
+            {listening ? "Dừng nhận thông báo" : "Bắt đầu nhận thông báo"}
           </Button>
-          <span className="hint">Thời gian chờ tối đa: 20 giây</span>
         </div>
         <div className="notification-list" aria-label="Thông báo đã nhận">
           {notifications.length === 0 ? (
             <div className="demo-empty">
               <Bell size={27} aria-hidden="true" />
-              <p>Hộp thư đang trống</p>
-              <span>Thông báo mới sẽ xuất hiện ở đây.</span>
+              <p>Chưa có thông báo</p>
             </div>
           ) : (
             <ul>
@@ -177,15 +214,10 @@ export function LongPollingDemo({ session }: { session: string }) {
             </ul>
           )}
         </div>
-        <p className="hint" role="status">
-          {notifications.length > 0
-            ? `Đã nhận ${notifications.length} thông báo trong phiên này.`
-            : "Chưa có thông báo."}
-        </p>
         <div className="panel-divider" />
         <form onSubmit={publish} aria-busy={publishing}>
           <label className="section-label" htmlFor="notification-text">
-            GIẢ LẬP PHÍA SERVER
+            MÔ PHỎNG PHÍA SERVER
           </label>
           <div className="form-field">
             <input
@@ -195,16 +227,12 @@ export function LongPollingDemo({ session }: { session: string }) {
               onChange={(event) => setText(event.target.value)}
               maxLength={200}
               required
-              aria-describedby="notification-help"
             />
             <Button type="submit" variant="outline" disabled={publishing || !text.trim()}>
               <Send size={15} aria-hidden="true" />
               {publishing ? "Đang tạo…" : "Tạo thông báo"}
             </Button>
           </div>
-          <p className="hint" id="notification-help">
-            Mỗi lần tạo sẽ đánh thức request đang chờ của client.
-          </p>
         </form>
         <p className="error-text" role="alert">
           {error}
@@ -213,10 +241,11 @@ export function LongPollingDemo({ session }: { session: string }) {
       <ActivityLog
         entries={entries}
         actors={[
-          { id: "client", label: "Hộp thư", role: "Client", state: listening ? "Một request đang mở" : "Đã dừng nhận" },
-          { id: "server", label: "Thông báo", role: "Server", state: listening ? "Chờ sự kiện hoặc timeout" : "Sẵn sàng" },
+          { id: "client", label: "Hộp thư", role: "Client", state: listening ? "Một request đang chờ" : "Đã dừng nhận" },
+          { id: "server", label: "Dịch vụ thông báo", role: "Server", state: listening ? "Chờ sự kiện hoặc timeout" : "Sẵn sàng" },
         ]}
-        note="Client chỉ hỏi tiếp sau khi request trước kết thúc. Server giữ request tối đa 20 giây; bước chờ mô tả cơ chế, không phải dữ liệu giám sát nội bộ server."
+        note="Timeout tối đa 20 giây. Tại mỗi thời điểm chỉ tồn tại một request đang chờ."
+        sequential
       />
     </div>
   );

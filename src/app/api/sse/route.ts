@@ -43,7 +43,6 @@ export function GET(request: Request) {
         request.signal.addEventListener("abort", close, { once: true });
         // ready giúp client biết stream đã đăng ký xong trước khi POST start.
         send("ready", {});
-        send("progress", state.progress);
         if (request.signal.aborted) close();
       },
       cancel() {
@@ -70,8 +69,8 @@ export async function POST(request: Request) {
     if (action === "reset") resetProgress(state);
     else {
       if (!state.subscribers.size)
-        return json({ error: "Hãy mở kết nối SSE trước khi chạy tác vụ." }, 409);
-      if (!startProgress(state)) return json({ error: "Tác vụ đang chạy." }, 409);
+        return json({ error: "Cần mở kết nối SSE trước khi khởi chạy tác vụ." }, 409);
+      if (!startProgress(state)) return json({ error: "Tác vụ đang được thực thi." }, 409);
     }
     return json({ ok: true });
   } catch (error) {

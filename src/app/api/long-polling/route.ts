@@ -29,7 +29,7 @@ export async function GET(request: Request) {
       .safeParse(new URL(request.url).searchParams.get("after") ?? 0);
     if (!after.success) return json({ error: "Cursor không hợp lệ." }, 400);
     const state = getSession(session);
-    if (after.data > state.cursor) return json({ error: "Cursor đã cũ. Hãy làm lại demo." }, 409);
+    if (after.data > state.cursor) return json({ error: "Cursor không còn hiệu lực. Vui lòng đặt lại phiên." }, 409);
     return json(await waitForNotification(state, after.data, request.signal));
   } catch (error) {
     return errorResponse(error);

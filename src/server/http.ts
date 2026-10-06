@@ -22,12 +22,12 @@ export function sessionFrom(request: Request) {
 // Dùng chung vì mọi POST đều cần cùng giới hạn kích thước và cách báo lỗi.
 export async function readBody<T>(request: Request, schema: z.ZodType<T>): Promise<T> {
   const origin = request.headers.get("origin");
-  if (origin && !isLocalOrigin(origin)) throw json({ error: "Nguồn gửi không được phép." }, 403);
+  if (origin && !isLocalOrigin(origin)) throw json({ error: "Origin của request không được phép." }, 403);
   if (!request.headers.get("content-type")?.startsWith("application/json")) {
-    throw json({ error: "Body phải có định dạng JSON." }, 415);
+    throw json({ error: "Request body phải ở định dạng JSON." }, 415);
   }
   const reader = request.body?.getReader();
-  if (!reader) throw json({ error: "Thiếu dữ liệu gửi lên." }, 400);
+  if (!reader) throw json({ error: "Request thiếu body." }, 400);
   let size = 0;
   const chunks: Uint8Array[] = [];
   try {
@@ -37,7 +37,7 @@ export async function readBody<T>(request: Request, schema: z.ZodType<T>): Promi
       size += value.byteLength;
       if (size > 4096) {
         await reader.cancel();
-        throw json({ error: "Dữ liệu vượt quá 4 KB." }, 413);
+        throw json({ error: "Request body vượt quá 4 KB." }, 413);
       }
       chunks.push(value);
     }
@@ -51,12 +51,12 @@ export async function readBody<T>(request: Request, schema: z.ZodType<T>): Promi
     throw json({ error: "JSON không hợp lệ." }, 400);
   }
   const parsed = schema.safeParse(body);
-  if (!parsed.success) throw json({ error: "Dữ liệu gửi lên không hợp lệ." }, 400);
+  if (!parsed.success) throw json({ error: "Request body không hợp lệ." }, 400);
   return parsed.data;
 }
 
 export function errorResponse(error: unknown) {
   if (error instanceof Response) return error;
   console.error("ProtoLab request failed:", error);
-  return json({ error: "Server gặp lỗi. Hãy thử lại." }, 500);
+  return json({ error: "Server gặp lỗi nội bộ. Vui lòng thử lại." }, 500);
 }

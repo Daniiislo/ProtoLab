@@ -13,6 +13,8 @@ export const NotificationSchema = z.object({
 export const NotificationBatchSchema = z.object({
   events: z.array(NotificationSchema),
   cursor: z.number().int().nonnegative(),
+  // true khi server đã giữ request trước khi trả response.
+  held: z.boolean(),
   timedOut: z.boolean(),
 });
 export const ProgressSchema = z.object({
@@ -25,11 +27,18 @@ export const PaymentSchema = z.object({
   eventId: z.string().uuid().nullable(),
   updatedAt: z.string().datetime().nullable(),
 });
-export const DeliverySchema = z.object({
+// Nhà cung cấp chỉ xác nhận đã ghi nhận thanh toán; webhook được gửi sau, tách khỏi request này.
+export const PaymentAcceptedSchema = z.object({
   ok: z.literal(true),
   eventId: z.string().uuid(),
-  deliveryStatus: z.number().int(),
 });
+export const WebhookReceiptSchema = z.object({
+  eventId: z.string().uuid(),
+  status: z.number().int(),
+  outcome: z.enum(["processed", "duplicate", "rejected"]),
+  receivedAt: z.string().datetime(),
+});
+export const WebhookLogSchema = z.object({ webhooks: z.array(WebhookReceiptSchema) });
 export const ChatNameSchema = z.string().trim().min(1).max(32);
 export const ChatParticipantSchema = z.object({
   id: z.string().uuid(),
@@ -61,5 +70,6 @@ export type Notification = z.infer<typeof NotificationSchema>;
 export type NotificationBatch = z.infer<typeof NotificationBatchSchema>;
 export type Progress = z.infer<typeof ProgressSchema>;
 export type Payment = z.infer<typeof PaymentSchema>;
+export type WebhookReceipt = z.infer<typeof WebhookReceiptSchema>;
 export type ChatMessage = z.infer<typeof ChatMessageSchema>;
 export type ChatParticipant = z.infer<typeof ChatParticipantSchema>;

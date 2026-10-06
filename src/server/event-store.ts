@@ -4,6 +4,7 @@ import type {
   Order,
   Payment,
   Progress,
+  WebhookReceipt,
 } from "../lib/protocol-contracts";
 
 type Subscriber = { send: (progress: Progress) => void; close: () => void };
@@ -16,8 +17,11 @@ type SessionState = {
   progress: Progress;
   subscribers: Set<Subscriber>;
   timer?: ReturnType<typeof setInterval>;
+  // Phía cửa hàng: trạng thái đơn và nhật ký các webhook đã nhận.
   payment: Payment;
-  paymentInFlight: boolean;
+  webhooks: WebhookReceipt[];
+  // Phía nhà cung cấp: sự kiện thanh toán và trạng thái gửi webhook của nó.
+  delivery: { eventId: string; status: "sending" | "delivered" | "failed" } | null;
 };
 
 const globalStore = globalThis as typeof globalThis & {
@@ -45,7 +49,7 @@ export function getSession(id: string): SessionState {
       now - state.touchedAt > 3_600_000 &&
       !state.waiters.size &&
       !state.subscribers.size &&
-      !state.paymentInFlight
+      state.delivery?.status !== "sending"
     ) {
       if (state.timer) clearInterval(state.timer);
       sessions.delete(key);
@@ -55,7 +59,7 @@ export function getSession(id: string): SessionState {
   if (!state) {
     if (sessions.size >= 1000)
       throw Response.json(
-        { error: "Demo đã đạt giới hạn 1.000 phiên. Hãy khởi động lại server." },
+        { error: "Đã đạt giới hạn 1.000 phiên. Vui lòng khởi động lại server." },
         { status: 503 },
       );
     state = {
@@ -67,7 +71,8 @@ export function getSession(id: string): SessionState {
       progress: initialProgress(),
       subscribers: new Set(),
       payment: initialPayment(),
-      paymentInFlight: false,
+      webhooks: [],
+      delivery: null,
     };
     sessions.set(id, state);
   }
@@ -78,11 +83,13 @@ export function getSession(id: string): SessionState {
 export function notificationBatch(
   state: SessionState,
   after: number,
+  held = false,
   timedOut = false,
 ): NotificationBatch {
   return {
     events: state.notifications.filter((event) => event.id > after),
     cursor: state.cursor,
+    held,
     timedOut,
   };
 }
@@ -92,6 +99,7 @@ export function waitForNotification(
   after: number,
   signal: AbortSignal,
 ): Promise<NotificationBatch> {
+  // Đã có thông báo sau cursor: trả response ngay, không giữ request.
   if (state.cursor > after || signal.aborted)
     return Promise.resolve(notificationBatch(state, after));
   // Request được giữ lại; POST sẽ gọi wake để trả response ngay khi có sự kiện.
@@ -100,7 +108,7 @@ export function waitForNotification(
       clearTimeout(timeout);
       state.waiters.delete(wake);
       signal.removeEventListener("abort", abort);
-      resolve(notificationBatch(state, after, timedOut));
+      resolve(notificationBatch(state, after, true, timedOut));
     };
     const wake = () => finish();
     const abort = () => finish();
@@ -143,8 +151,8 @@ export function startProgress(state: SessionState) {
   state.progress = { progress: 0, step: "Đang chuẩn bị dữ liệu", done: false };
   for (const subscriber of state.subscribers) subscriber.send(state.progress);
   const steps = [
-    "Đọc dữ liệu",
-    "Kiểm tra bản ghi",
+    "Truy xuất dữ liệu",
+    "Xác thực bản ghi",
     "Tổng hợp số liệu",
     "Tạo biểu đồ",
     "Xuất báo cáo",

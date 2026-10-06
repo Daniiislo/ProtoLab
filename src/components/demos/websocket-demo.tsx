@@ -12,7 +12,7 @@ type ChatMessage = z.infer<typeof ChatMessageSchema>;
 const ErrorSchema = z.object({ error: z.string() });
 
 export function WebSocketDemo({ session }: { session: string }) {
-  const { entries, log } = useActivity();
+  const { entries, log, extend } = useActivity();
   const [state, setState] = useState<"idle" | "connecting" | "connected" | "error">("idle");
   const [name, setName] = useState("Khách 01");
   const [text, setText] = useState("");
@@ -44,15 +44,28 @@ export function WebSocketDemo({ session }: { session: string }) {
     setParticipants([]);
     try {
       let ownId = "client";
+      // Trình duyệt này luôn là actor "client" trong sơ đồ, kể cả trước khi server cấp ID.
+      const actor = (id: string) => (id === ownId ? "client" : id);
       const connection = new WebSocket(
         `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws?room=${session}&name=${encodeURIComponent(name.trim())}`,
       );
       socket.current = connection;
-      log("send", "Mở kết nối hai chiều", "WebSocket /ws", [
-        { from: "client", to: "server", label: "Yêu cầu mở WebSocket", detail: name.trim() },
+      // Bắt tay WebSocket là một entry: request Upgrade, 101, rồi message chào từ server.
+      const handshake = log("info", "Mở kết nối WebSocket", "GET /ws · Upgrade: websocket", [
+        {
+          from: "client", to: "server", label: "Gửi HTTP request nâng cấp lên WebSocket",
+          detail: `GET /ws?room=…&name=${name.trim()}\nHost: ${location.host}\nOrigin: ${location.origin}\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Version: 13\nSec-WebSocket-Key: <16 byte ngẫu nhiên, mã hóa base64>`,
+        },
       ]);
+      let opened = false;
       connection.onopen = () => {
-        log("info", "Socket đã mở", "Đang chờ server cấp ID và danh sách người tham gia.");
+        opened = true;
+        extend(handshake, "receive", "Kết nối WebSocket đã mở", "101 Switching Protocols", [
+          {
+            from: "server", to: "client", label: "101 Switching Protocols · nâng cấp thành công",
+            detail: 'HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: base64(SHA-1(Sec-WebSocket-Key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"))',
+          },
+        ]);
       };
       connection.onmessage = (event: MessageEvent<string>) => {
         try {
@@ -65,79 +78,111 @@ export function WebSocketDemo({ session }: { session: string }) {
             setClientId(ownId);
             setParticipants(welcome.data.participants);
             setState("connected");
-            log("receive", "Server xác nhận kết nối", `${name.trim()} · #${ownId.slice(0, 6)}`, [
-              { from: "server", to: ownId, label: "Cấp ID và gửi danh sách phòng", detail: `${welcome.data.participants.length} kết nối đang mở` },
+            // welcome là message tầng ứng dụng; kết nối đã được chấp nhận từ bước 101.
+            extend(handshake, "receive", "Nhận message welcome", `${name.trim()} · #${ownId.slice(0, 6)}`, [
+              { from: "server", to: "client", label: "Message welcome · cấp ID và danh sách thành viên", detail: event.data },
             ]);
             return;
           }
           const presence = ChatPresenceSchema.safeParse(data);
           if (presence.success) {
             setParticipants(presence.data.participants);
-            log("receive", "Danh sách người tham gia thay đổi", `${presence.data.participants.length} kết nối đang mở`, [
-              { from: "server", to: ownId, label: "Cập nhật người vào / rời phòng", detail: presence.data.participants.map((person) => `${person.name} #${person.id.slice(0, 6)}`).join(", ") },
+            log("receive", "Danh sách thành viên thay đổi", `${presence.data.participants.length} kết nối đang mở`, [
+              { from: "server", to: "client", label: "Message presence · thành viên tham gia / rời phòng", detail: event.data },
             ]);
             return;
           }
           const message = ChatMessageSchema.parse(data);
           setMessages((items) => [...items, message].slice(-100));
           const steps: FlowStep[] = [
-            { from: message.senderId, to: "server", label: "Server nhận và kiểm tra tin", detail: message.text },
+            { from: actor(message.senderId), to: "server", label: "Gửi tin nhắn (text frame)", detail: `Text frame (masked)\ntext: ${message.text}` },
+            { from: "server", to: "server", label: "Kiểm tra tin nhắn · dùng tên đã đăng ký", detail: "Kiểm tra độ dài name/text; tên hiển thị lấy từ lúc kết nối." },
             ...message.recipients.map((person) => ({
-              from: "server", to: person.id,
+              from: "server", to: actor(person.id),
               label: person.id === ownId
-                ? message.senderId === ownId ? "Bạn nhận lại tin của mình (echo)" : "Trình duyệt này nhận tin"
-                : person.id === message.senderId ? "Phát lại cho người gửi (echo)" : "Phát tới socket người nhận",
-              detail: person.id === ownId ? "Đã nhận qua sự kiện onmessage" : "Server phát tin; chưa có xác nhận từ trình duyệt kia",
+                ? message.senderId === ownId ? "Nhận lại tin nhắn của chính mình (echo)" : "Trình duyệt này nhận tin nhắn"
+                : person.id === message.senderId ? "Phát lại cho bên gửi (echo, không có ack)" : "Phát tới kết nối của bên nhận (không có ack)",
+              detail: `Text frame\n${event.data}`,
             })),
           ];
-          log("receive", message.senderId === ownId ? "Nhận lại tin của bạn từ server" : `Nhận tin từ ${message.name}`, message.text, steps);
+          log("receive", message.senderId === ownId ? "Nhận lại tin nhắn đã gửi từ server" : `Nhận tin nhắn từ ${message.name}`, message.text, steps);
         } catch (cause) {
           const message = cause instanceof Error ? cause.message : "Tin nhắn không hợp lệ.";
           setError(message);
-          log("error", "Không nhận được tin nhắn", message);
+          log("error", "Không xử lý được tin nhắn", message);
         }
       };
       connection.onerror = () => {
         closeSocket();
         setState("error");
         setParticipants([]);
-        setError("Không thể kết nối tới server. Bấm kết nối để thử lại.");
-        log("error", "Kết nối WebSocket thất bại");
+        setError(opened ? "Kết nối tới server bị ngắt." : "Không thể kết nối tới server.");
+        if (opened) log("error", "Kết nối WebSocket bị ngắt");
+        else extend(handshake, "error", "Bắt tay WebSocket thất bại", undefined, [
+          { from: "client", to: "client", label: "Bắt tay thất bại · onerror", detail: "Không nhận được 101 Switching Protocols hợp lệ." },
+        ]);
       };
-      connection.onclose = () => {
-        socket.current = null;
+      // Chỉ chạy khi server đóng hoặc kết nối mất; client chủ động đóng được xử lý trong disconnect().
+      connection.onclose = (event: CloseEvent) => {
+        if (socket.current === connection) socket.current = null;
         setState("idle");
         setParticipants([]);
-        log("info", "Server đã đóng kết nối", "Bạn có thể kết nối lại để tiếp tục.");
+        log("info", event.wasClean ? "Server đóng kết nối" : "Kết nối bị ngắt đột ngột", `Close code ${event.code}`, [
+          event.wasClean
+            ? { from: "server", to: "client", label: "Close frame từ server", detail: `Opcode 0x8 · close code ${event.code}` }
+            : { from: "client", to: "client", label: "Mất kết nối · không có close handshake", detail: `Close code ${event.code} · wasClean: false` },
+        ]);
       };
     } catch {
       closeSocket();
       setState("error");
-      setError("Không mở được kết nối WebSocket.");
+      setError("Không thể mở kết nối WebSocket.");
     }
   }
 
   function disconnect() {
-    closeSocket();
+    const current = socket.current;
+    if (!current) return;
+    socket.current = null;
     setState("idle");
     setParticipants([]);
-    log("info", "Đã ngắt kết nối", "Tin nhắn đã nhận vẫn được giữ trên màn hình.", [
-      { from: clientId, to: "server", label: "Đóng kết nối WebSocket" },
+    if (current.readyState === WebSocket.CONNECTING) {
+      // Chưa bắt tay xong: close() hủy kết nối, không có Close frame nào được gửi.
+      current.onopen = current.onmessage = current.onclose = current.onerror = null;
+      current.close();
+      log("info", "Hủy kết nối WebSocket", undefined, [
+        { from: "client", to: "client", label: "Hủy bắt tay", detail: "WebSocket.close() khi readyState: CONNECTING" },
+      ]);
+      return;
+    }
+    // Close handshake: client gửi Close frame, server gửi lại Close frame rồi đóng kết nối.
+    current.onmessage = current.onerror = null;
+    const story = log("info", "Client đóng kết nối", "Close handshake", [
+      { from: "client", to: "server", label: "Gửi Close frame", detail: "Opcode 0x8 · không kèm status code" },
     ]);
+    current.onclose = (event: CloseEvent) => {
+      extend(story, "info", "Đã đóng kết nối", `Close code ${event.code}`, [
+        event.wasClean
+          ? { from: "server", to: "client", label: "Close frame từ server · đóng kết nối", detail: `Opcode 0x8 · close code ${event.code} · wasClean: true` }
+          : { from: "client", to: "client", label: "Kết nối đóng không qua close handshake", detail: `Close code ${event.code} · wasClean: false` },
+      ]);
+    };
+    current.close();
   }
 
   function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!text.trim() || socket.current?.readyState !== WebSocket.OPEN) return;
     try {
-      socket.current.send(JSON.stringify({ name: name.trim(), text: text.trim() }));
-      log("send", "Bạn gửi tin lên server", text.trim(), [
-        { from: clientId, to: "server", label: "Gửi tin qua WebSocket", detail: text.trim() },
+      const frame = JSON.stringify({ name: name.trim(), text: text.trim() });
+      socket.current.send(frame);
+      log("send", "Gửi tin nhắn tới server", text.trim(), [
+        { from: "client", to: "server", label: "Gửi tin nhắn (text frame)", detail: `Text frame (masked)\n${frame}` },
       ]);
       setText("");
       setError("");
     } catch {
-      setError("Không gửi được tin nhắn. Hãy kết nối lại.");
+      setError("Không thể gửi tin nhắn.");
       log("error", "Gửi tin nhắn thất bại");
     }
   }
@@ -145,36 +190,33 @@ export function WebSocketDemo({ session }: { session: string }) {
   const active = state === "connecting" || state === "connected";
   const actors: Actor[] = [
     ...(participants.length ? participants.map((person) => ({
-      id: person.id,
+      id: person.id === clientId ? "client" : person.id,
       label: `${person.name} · #${person.id.slice(0, 6)}`,
-      role: person.id === clientId ? "Client · bạn" : "Client · người khác",
+      role: person.id === clientId ? "Client · trình duyệt này" : "Client · thành viên khác",
       state: "Đã kết nối",
-    })) : [{ id: clientId, label: name.trim() || "Trình duyệt này", role: "Client · bạn", state: state === "connecting" ? "Đang kết nối" : "Chưa kết nối" }]),
+    })) : [{ id: "client", label: name.trim() || "Trình duyệt này", role: "Client · trình duyệt này", state: state === "connecting" ? "Đang kết nối" : "Chưa kết nối" }]),
     { id: "server", label: "Chat server", role: "Server", state: `${participants.length} kết nối trong phòng` },
   ];
   return (
     <div className="demo-grid">
-      <section className="experiment-panel" aria-label="Demo WebSocket">
+      <section className="experiment-panel" aria-label="Thí nghiệm WebSocket">
         <div className="panel-topline">
-          <span className="section-label">PHÒNG CHAT / {session.slice(0, 8)}</span>
+          <span className="section-label">PHÒNG TRÒ CHUYỆN / {session.slice(0, 8)}</span>
           <MessageSquare size={19} aria-hidden="true" />
         </div>
         <div className="status-row">
-          <h3 className="panel-title">Cuộc trò chuyện hai chiều.</h3>
+          <h3 className="panel-title">Trò chuyện thời gian thực</h3>
           <Status tone={state === "error" ? "error" : active ? "live" : "idle"}>
             {
               {
                 idle: "Chưa kết nối",
                 connecting: "Đang kết nối",
                 connected: "Đã kết nối",
-                error: "Có lỗi",
+                error: "Lỗi",
               }[state]
             }
           </Status>
         </div>
-        <p className="muted">
-          Mở người tham gia thứ hai, kết nối ở cả hai cửa sổ và gửi tin qua lại.
-        </p>
         <div className="form-field">
           <label htmlFor="chat-name" className="section-label">
             TÊN HIỂN THỊ
@@ -210,7 +252,7 @@ export function WebSocketDemo({ session }: { session: string }) {
               rel="noopener noreferrer"
             >
               <ExternalLink size={15} aria-hidden="true" />
-              Mở người tham gia thứ hai
+              Mở thêm một phiên client
             </a>
           </Button>
         </div>
@@ -218,8 +260,7 @@ export function WebSocketDemo({ session }: { session: string }) {
           {messages.length === 0 ? (
             <div className="demo-empty">
               <MessageSquare size={28} aria-hidden="true" />
-              <p>Hãy gửi lời chào đầu tiên</p>
-              <span>Tin nhắn sẽ đến mọi người trong cùng phòng.</span>
+              <p>Chưa có tin nhắn</p>
             </div>
           ) : (
             <ul>
@@ -238,7 +279,7 @@ export function WebSocketDemo({ session }: { session: string }) {
           )}
         </div>
         <p className="hint" role="status">
-          {state === "connected" ? `${participants.length} người đang kết nối: ${participants.map((person) => `${person.name} #${person.id.slice(0, 6)}${person.id === clientId ? " (bạn)" : ""}`).join(", ")}.` : "Trình duyệt này chưa vào phòng. Kết nối để xem người tham gia thực tế."}
+          {state === "connected" ? `${participants.length} thành viên đang kết nối: ${participants.map((person) => `${person.name} #${person.id.slice(0, 6)}${person.id === clientId ? " (bạn)" : ""}`).join(", ")}.` : ""}
         </p>
         <form className="chat-compose" onSubmit={send}>
           <label className="sr-only" htmlFor="chat-text">
@@ -250,7 +291,7 @@ export function WebSocketDemo({ session }: { session: string }) {
             value={text}
             onChange={(event) => setText(event.target.value)}
             placeholder={
-              state === "connected" ? "Viết một tin nhắn…" : "Kết nối để bắt đầu trò chuyện"
+              state === "connected" ? "Nhập tin nhắn…" : "Chưa kết nối"
             }
             disabled={state !== "connected"}
             maxLength={500}
@@ -265,7 +306,7 @@ export function WebSocketDemo({ session }: { session: string }) {
           {error}
         </p>
       </section>
-      <ActivityLog entries={entries} actors={actors} note="Server phát mỗi tin cho mọi socket trong phòng, kể cả người gửi. Chỉ trình duyệt này xác nhận đã nhận qua onmessage; không suy đoán trình duyệt khác đã đọc tin." />
+      <ActivityLog entries={entries} actors={actors} note="Server phát quảng bá mỗi tin nhắn tới mọi kết nối trong phòng, bao gồm cả bên gửi." />
     </div>
   );
 }

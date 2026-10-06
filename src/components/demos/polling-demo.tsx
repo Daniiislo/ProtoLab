@@ -28,6 +28,8 @@ export function PollingDemo({ session }: { session: string }) {
   const [requests, setRequests] = useState(0);
   const [receivedAt, setReceivedAt] = useState("—");
   const mutations = useRef<AbortController | null>(null);
+  // Trạng thái client nhận được ở lần truy vấn trước, để phân biệt response có thay đổi hay không.
+  const seen = useRef<number | null>(null);
   const { entries, log } = useActivity();
 
   useEffect(() => () => mutations.current?.abort(), []);
@@ -38,8 +40,8 @@ export function PollingDemo({ session }: { session: string }) {
     async function poll() {
       if (busy || abort.signal.aborted) return;
       busy = true;
-      log("send", "GET /api/polling", "Client kiểm tra trạng thái đơn hàng", [
-        { from: "client", to: "server", label: "Hỏi trạng thái đơn", detail: "GET /api/polling · đang chờ phản hồi" },
+      log("send", "GET /api/polling", "Truy vấn trạng thái đơn hàng", [
+        { from: "client", to: "server", label: "Gửi request truy vấn trạng thái", detail: "GET /api/polling · đang chờ response" },
       ]);
       setRequests((count) => count + 1);
       try {
@@ -47,20 +49,30 @@ export function PollingDemo({ session }: { session: string }) {
           cache: "no-store",
           signal: abort.signal,
         });
-        if (!response.ok) throw new Error(`Không đọc được đơn hàng (HTTP ${response.status}).`);
+        if (!response.ok) throw new Error(`Không thể truy xuất đơn hàng (HTTP ${response.status}).`);
         const nextOrder = OrderSchema.parse(await response.json());
         if (abort.signal.aborted) return;
         setOrder(nextOrder);
         setReceivedAt(new Date().toLocaleTimeString("vi-VN", { hour12: false }));
-        log("receive", `200 OK · ${steps[nextOrder.step]}`, JSON.stringify(nextOrder), [
-          { from: "client", to: "server", label: "Hỏi trạng thái đơn", detail: "GET /api/polling" },
-          { from: "server", to: "server", label: "Đọc trạng thái hiện tại", detail: steps[nextOrder.step] },
-          { from: "server", to: "client", label: "200 OK · trả trạng thái", detail: JSON.stringify(nextOrder) },
-          { from: "client", to: "client", label: nextOrder.step === 3 ? "Đơn đã giao · dừng hỏi" : "Cập nhật giao diện · đợi lần hỏi kế tiếp", detail: "Mỗi chu kỳ là một HTTP request mới." },
+        // Phần lớn chu kỳ polling trả về dữ liệu không đổi: đó là chi phí đặc trưng của cơ chế này.
+        const previous = seen.current;
+        seen.current = nextOrder.step;
+        const unchanged = previous === nextOrder.step;
+        const result = previous === null ? "trạng thái hiện tại" : unchanged ? "trạng thái không đổi" : "trạng thái mới";
+        log("receive", `200 OK · ${unchanged ? "không đổi · " : ""}${steps[nextOrder.step]}`, JSON.stringify(nextOrder), [
+          { from: "client", to: "server", label: "Gửi request truy vấn trạng thái", detail: "GET /api/polling" },
+          { from: "server", to: "server", label: "Truy xuất trạng thái hiện tại", detail: steps[nextOrder.step] },
+          { from: "server", to: "client", label: `200 OK · ${result}`, detail: JSON.stringify(nextOrder) },
+          {
+            from: "client", to: "client",
+            label: nextOrder.step === 3 ? "Đơn hàng hoàn tất · dừng truy vấn"
+              : unchanged ? "Không có dữ liệu mới · chờ chu kỳ kế tiếp" : "Cập nhật giao diện · chờ chu kỳ kế tiếp",
+            detail: "Mỗi chu kỳ tương ứng với một HTTP request độc lập.",
+          },
         ]);
         if (nextOrder.step === 3) {
           setRunning(false);
-          log("info", "Đơn đã giao · kết thúc theo dõi");
+          log("info", "Đơn hàng hoàn tất · kết thúc theo dõi");
         }
       } catch (cause) {
         if (abort.signal.aborted) return;
@@ -85,9 +97,6 @@ export function PollingDemo({ session }: { session: string }) {
     mutations.current = abort;
     setChanging(true);
     setError("");
-    log("send", "POST /api/polling", "Cửa hàng chuyển trạng thái ở backend", [
-      { from: "client", to: "server", label: "Giả lập cửa hàng đổi trạng thái", detail: 'POST /api/polling · {"action":"advance"}' },
-    ]);
     try {
       const response = await fetch("/api/polling", {
         method: "POST",
@@ -99,17 +108,11 @@ export function PollingDemo({ session }: { session: string }) {
       const result = OrderSchema.parse(await response.json());
       if (abort.signal.aborted) return;
       // Chỉ cập nhật vùng cửa hàng. Vùng khách hàng phải đợi GET kế tiếp.
+      // Thao tác của cửa hàng là thay đổi nội bộ phía server, không phải trao đổi với khách hàng.
       setServerStep(result.step);
-      log(
-        "info",
-        `Server đã đổi: ${steps[result.step]}`,
-        "Giao diện khách hàng chờ lần polling tiếp theo.",
-        [
-          { from: "client", to: "server", label: "Yêu cầu chuyển bước", detail: 'POST /api/polling · {"action":"advance"}' },
-          { from: "server", to: "server", label: "Lưu trạng thái mới", detail: steps[result.step] },
-          { from: "server", to: "client", label: "Xác nhận thao tác cửa hàng", detail: "Vùng khách hàng vẫn đợi GET tiếp theo để cập nhật." },
-        ],
-      );
+      log("info", `Server đã cập nhật: ${steps[result.step]}`, JSON.stringify(result), [
+        { from: "server", to: "server", label: "Cửa hàng cập nhật trạng thái đơn hàng", detail: JSON.stringify(result) },
+      ]);
     } catch (cause) {
       if (abort.signal.aborted) return;
       const message = cause instanceof Error ? cause.message : "Cập nhật thất bại.";
@@ -124,7 +127,7 @@ export function PollingDemo({ session }: { session: string }) {
   const tone = error ? "error" : running ? "live" : observedStep === 3 ? "done" : "idle";
   return (
     <div className="demo-grid">
-      <section className="experiment-panel" aria-label="Demo theo dõi đơn hàng">
+      <section className="experiment-panel" aria-label="Thí nghiệm polling">
         <div className="panel-topline">
           <span className="section-label">01 / PHÍA KHÁCH HÀNG</span>
           <Status tone={tone}>
@@ -143,8 +146,8 @@ export function PollingDemo({ session }: { session: string }) {
           </div>
           <div>
             <span className="muted">ĐƠN HÀNG MẪU</span>
-            <h3 className="panel-title">Một chút cà phê, gửi đến bạn.</h3>
-            <span className="mono order-code">#PL-2026 · 02 sản phẩm</span>
+            <h3 className="panel-title">Đơn hàng #PL-2026</h3>
+            <span className="mono order-code">02 sản phẩm</span>
           </div>
         </div>
         <div className="order-summary">
@@ -175,17 +178,17 @@ export function PollingDemo({ session }: { session: string }) {
         </ol>
         <div className="polling-metrics">
           <div className="metric">
-            <span className="metric-label">CHU KỲ KIỂM TRA</span>
+            <span className="metric-label">CHU KỲ TRUY VẤN</span>
             <span className="metric-value">
               2<span>giây</span>
             </span>
           </div>
           <div className="metric">
-            <span className="metric-label">REQUEST ĐÃ GỬI</span>
+            <span className="metric-label">SỐ REQUEST ĐÃ GỬI</span>
             <span className="metric-value mono">{requests.toString().padStart(2, "0")}</span>
           </div>
           <div className="metric">
-            <span className="metric-label">LẦN NHẬN GẦN NHẤT</span>
+            <span className="metric-label">RESPONSE GẦN NHẤT</span>
             <span className="metric-time mono">{receivedAt}</span>
           </div>
         </div>
@@ -194,18 +197,13 @@ export function PollingDemo({ session }: { session: string }) {
             onClick={() => {
               setError("");
               setRunning((value) => !value);
-              log("info", running ? "Đã dừng polling" : "Bắt đầu polling mỗi 2 giây");
+              log("info", running ? "Dừng polling" : "Bắt đầu polling (chu kỳ 2 giây)");
             }}
             disabled={observedStep === 3}
           >
             {running ? <Square size={15} /> : <Play size={15} />}
             {running ? "Dừng theo dõi" : "Bắt đầu theo dõi"}
           </Button>
-          <span className="hint">
-            {observedStep === 3
-              ? "Bấm Làm lại để bắt đầu một đơn mới."
-              : "Bước 1: kết nối. Bước 2: đổi trạng thái bên dưới."}
-          </span>
         </div>
         {error && (
           <p className="error-text" role="alert">
@@ -214,13 +212,12 @@ export function PollingDemo({ session }: { session: string }) {
         )}
         <div className="simulator">
           <div className="panel-topline">
-            <span className="section-label">02 / GIẢ LẬP CỬA HÀNG</span>
+            <span className="section-label">02 / MÔ PHỎNG PHÍA CỬA HÀNG</span>
             <span className="mono server-label">SERVER</span>
           </div>
           <div className="simulator-content">
             <div>
               <strong>{steps[serverStep]}</strong>
-              <p>Chủ động đổi trạng thái để quan sát độ trễ.</p>
             </div>
             <Button
               variant="outline"
@@ -228,7 +225,7 @@ export function PollingDemo({ session }: { session: string }) {
               disabled={changing || serverStep === 3}
               aria-busy={changing}
             >
-              {changing ? "Đang cập nhật…" : "Chuyển bước"}
+              {changing ? "Đang cập nhật…" : "Chuyển trạng thái"}
               <ArrowRight size={16} />
             </Button>
           </div>
@@ -237,10 +234,10 @@ export function PollingDemo({ session }: { session: string }) {
       <ActivityLog
         entries={entries}
         actors={[
-          { id: "client", label: "Khách hàng", role: "Client", state: running ? "Hỏi mỗi 2 giây" : "Đã dừng hỏi" },
+          { id: "client", label: "Khách hàng", role: "Client", state: running ? "Truy vấn mỗi 2 giây" : "Đã dừng truy vấn" },
           { id: "server", label: "Cửa hàng", role: "Server", state: steps[Math.max(serverStep, observedStep)] },
         ]}
-        note="Client chủ động hỏi mỗi 2 giây; server trả ngay trạng thái hiện tại, kể cả khi chưa thay đổi. Chuyển động minh họa thứ tự, không biểu diễn thời gian truyền thực tế."
+        note="Chu kỳ truy vấn 2 giây. Server trả về trạng thái hiện tại kể cả khi dữ liệu không thay đổi."
       />
     </div>
   );

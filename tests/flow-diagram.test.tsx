@@ -28,6 +28,6 @@ test("internal processing has no network arrow; historical actors remain readabl
   assert.match(html, /flow-local/);
   assert.doesNotMatch(html, /class="flow-route/);
   assert.match(html, /Xử lý nội bộ/);
-  assert.match(html, /Kết nối trước đó/);
-  assert.match(html, /departed/);
+  assert.match(html, /Ngoài danh sách hiện tại/);
+  assert.match(html, /#depart/);
 });

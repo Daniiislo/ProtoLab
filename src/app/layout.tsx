@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ProtoLab — Client–Server Lab",
   description:
-    "Năm cách client và server giao tiếp. Thao tác, quan sát và hiểu cách dữ liệu di chuyển.",
+    "Năm mô hình giao tiếp giữa client và server, trình bày dưới dạng thí nghiệm tương tác.",
   icons: { icon: "/favicon.svg" },
 };
 

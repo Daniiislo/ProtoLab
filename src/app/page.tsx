@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="app-shell">
       <a href="#workspace" className="skip-link">
-        Đến nội dung chính
+        Chuyển tới nội dung chính
       </a>
       <header className="app-header">
         <div className="brand">
@@ -22,7 +22,7 @@ export default function Home() {
         <div className="header-note">
           Client &amp; server.
           <br />
-          <strong>Năm cách kết nối.</strong>
+          <strong>Năm mô hình giao tiếp.</strong>
         </div>
         <span className="local-badge">
           <span className="tiny-dot" />
@@ -34,9 +34,9 @@ export default function Home() {
         <ProtocolTabs />
       </main>
       <footer className="app-footer">
-        <span>THAO TÁC. QUAN SÁT. HIỂU CƠ CHẾ.</span>
+        <span>THỰC NGHIỆM · QUAN SÁT · PHÂN TÍCH</span>
         <span>
-          05 giao thức <span className="footer-divider">/</span> 01 phòng thí nghiệm
+          05 mô hình giao tiếp <span className="footer-divider">/</span> 01 phòng thí nghiệm
         </span>
       </footer>
     </div>

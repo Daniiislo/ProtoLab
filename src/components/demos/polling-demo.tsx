@@ -40,9 +40,8 @@ export function PollingDemo({ session }: { session: string }) {
     async function poll() {
       if (busy || abort.signal.aborted) return;
       busy = true;
-      log("send", "GET /api/polling", "Truy vấn trạng thái đơn hàng", [
-        { from: "client", to: "server", label: "Gửi request truy vấn trạng thái", detail: "GET /api/polling · đang chờ response" },
-      ]);
+      // Không kèm flow: bước client → server đã nằm trong entry "receive", tránh vẽ mũi tên hai lần.
+      log("send", "GET /api/polling", "Truy vấn trạng thái đơn hàng");
       setRequests((count) => count + 1);
       try {
         const response = await fetch(`/api/polling?session=${session}`, {

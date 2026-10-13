@@ -1,0 +1,14 @@
+{
+  "stage": "stage1",
+  "lang": "en",
+  "primary_language": "en",
+  "recommend": {"canvas": "ppt169"},
+  "audience": {"value": "Web developers familiar with basic HTTP; assume no prior real-time networking expertise."},
+  "communication_intent": {"value": "Use two illustrated forum pain points to introduce Polling, Long Polling, SSE and WebSocket. Explain the methods practically, then share concise best practices and trade-offs. Finish with Demo & Q&A. Exclude SignalR and Webhooks."},
+  "audience_outcome": {"value": "Understand the four methods, distinguish server-to-client updates from two-way messaging, and recognize reconnect, persistence and authorization responsibilities."},
+  "core_message": {"value": "Choose the communication method that fits the interaction; fast updates still need reliable application design."},
+  "delivery_context": {"value": "Live presenter-led technical talk. All slide text in English, spoken delivery and speaker notes in Vietnamese. Diagram-led, minimal words, simple clear illustrations. Modern, clean, consistent, professional technology/academic aesthetic."},
+  "artifact_afterlife": {"value": "Editable PowerPoint with Vietnamese speaker notes for rehearsal and future updates. Cover and agenda, illustrated pain points, one four-method overview followed by one slide per method, visual lessons, final Demo & Q&A."},
+  "content_divergence": {"value": ""},
+  "template_options": {"schema_version": 1, "phase": "template", "lang": "en", "default_mode": "free_design", "explicit_workspace_roots": []}
+}

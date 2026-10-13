@@ -1,0 +1,107 @@
+{
+  "roles": {
+    "body": {
+      "family": "Segoe UI",
+      "size": 28.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 3.4,
+      "latin_chars_per_100px": 7.6,
+      "caps_chars_per_100px": 6.4,
+      "digits_chars_per_100px": 6.2,
+      "citation_chars_per_100px": 7.3,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": {
+        "px": 490.4,
+        "slide": "P01",
+        "text": "Notifications. Messages. Less waiting."
+      }
+    },
+    "title": {
+      "family": "Segoe UI",
+      "size": 48.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 2.0,
+      "latin_chars_per_100px": 4.4,
+      "caps_chars_per_100px": 3.8,
+      "digits_chars_per_100px": 3.6,
+      "citation_chars_per_100px": 4.2,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": {
+        "px": 1022.8,
+        "slide": "P05",
+        "text": "From Repeated Requests to Live Connecti…"
+      }
+    },
+    "subtitle": {
+      "family": "Segoe UI",
+      "size": 32.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 2.9,
+      "latin_chars_per_100px": 6.7,
+      "caps_chars_per_100px": 5.6,
+      "digits_chars_per_100px": 5.5,
+      "citation_chars_per_100px": 6.4,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": {
+        "px": 723.4,
+        "slide": "P02",
+        "text": "Problems lead to methods and practical …"
+      }
+    },
+    "annotation": {
+      "family": "Segoe UI",
+      "size": 20.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 4.7,
+      "latin_chars_per_100px": 10.7,
+      "caps_chars_per_100px": 9.0,
+      "digits_chars_per_100px": 8.7,
+      "citation_chars_per_100px": 10.2,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": null
+    },
+    "code": {
+      "family": "Consolas",
+      "size": 22.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 4.3,
+      "latin_chars_per_100px": 7.7,
+      "caps_chars_per_100px": 7.4,
+      "digits_chars_per_100px": 7.8,
+      "citation_chars_per_100px": 7.7,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": null
+    },
+    "display": {
+      "family": "Segoe UI",
+      "size": 72.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 1.3,
+      "latin_chars_per_100px": 3.0,
+      "caps_chars_per_100px": 2.5,
+      "digits_chars_per_100px": 2.4,
+      "citation_chars_per_100px": 2.8,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": null
+    },
+    "footnote": {
+      "family": "Segoe UI",
+      "size": 14.0,
+      "weight": "normal",
+      "cjk_chars_per_100px": 6.7,
+      "latin_chars_per_100px": 15.2,
+      "caps_chars_per_100px": 12.9,
+      "digits_chars_per_100px": 12.5,
+      "citation_chars_per_100px": 14.5,
+      "script_clusters_per_100px": {},
+      "longest_planned_line": null
+    }
+  },
+  "script_samples": {},
+  "source": "spec_lock.md",
+  "generated_at": "2026-10-07T14:17:38Z",
+  "notes": [
+    "role display (72px, at least twice body) has no display_family and uses body_family; declare display_family if it is display type",
+    "every role is measured at normal weight; recalibrate a role realized as bold deck-wide with --role NAME:FAMILY:SIZE:bold: bold widens Latin and digits about 7%, while the bundled advance table gives CJK one width for both weights"
+  ]
+}

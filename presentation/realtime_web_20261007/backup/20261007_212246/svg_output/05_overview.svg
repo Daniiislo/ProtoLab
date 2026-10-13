@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 50 1152 181"><text x="64" y="80" font-size="20" fill="#007F9E">02 / REAL-TIME COMMUNICATION METHODS</text><text x="64" y="140" font-size="48" font-weight="600" fill="#102A43">From Repeated Requests<tspan x="64" dy="60">to Live Connections</tspan></text></g>
+<g id="method-map" data-pptx-bounds="64 270 1152 242">
+<line x1="115" y1="324" x2="1168" y2="324" stroke="#CAD7E2" stroke-width="3" />
+<circle cx="140" cy="324" r="24" fill="#FFFFFF" stroke="#007F9E" stroke-width="3" /><text x="140" y="331" text-anchor="middle" font-size="20" fill="#007F9E">1</text>
+<circle cx="437" cy="324" r="24" fill="#FFFFFF" stroke="#007F9E" stroke-width="3" /><text x="437" y="331" text-anchor="middle" font-size="20" fill="#007F9E">2</text>
+<circle cx="734" cy="324" r="24" fill="#007F9E" /><text x="734" y="331" text-anchor="middle" font-size="20" fill="#FFFFFF">3</text>
+<circle cx="1031" cy="324" r="24" fill="#007F9E" /><text x="1031" y="331" text-anchor="middle" font-size="20" fill="#FFFFFF">4</text>
+<text x="76" y="404" font-size="32" font-weight="600" fill="#102A43">Polling</text><text x="76" y="452" font-size="20" fill="#526B80">Ask again</text>
+<text x="351" y="404" font-size="32" font-weight="600" fill="#102A43">Long Polling</text><text x="351" y="452" font-size="20" fill="#526B80">Wait, then ask</text>
+<text x="680" y="404" font-size="32" font-weight="600" fill="#102A43">SSE</text><text x="680" y="452" font-size="20" fill="#526B80">Receive a stream</text>
+<text x="955" y="404" font-size="32" font-weight="600" fill="#102A43">WebSocket</text><text x="955" y="452" font-size="20" fill="#526B80">Talk both ways</text>
+<text x="76" y="498" font-size="14" fill="#526B80">REPEATED REQUESTS</text><text x="680" y="498" font-size="14" fill="#007F9E">LONG-LIVED CHANNELS</text>
+</g>
+<g id="takeaway" data-pptx-bounds="64 555 1152 64"><text x="64" y="598" font-size="32" fill="#102A43">Different trade-offs. <tspan fill="#007F9E" font-weight="600">No universal winner.</tspan></text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">05 / 12</text></g>
+</svg>

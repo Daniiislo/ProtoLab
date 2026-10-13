@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1152 112"><text x="64" y="88" font-size="20" fill="#007F9E">02 / METHODS · 1 OF 4</text><text x="64" y="148" font-size="48" font-weight="600" fill="#102A43">Polling</text></g>
+<g id="sequence" data-pptx-bounds="64 211 710 402">
+<text x="182" y="248" text-anchor="middle" fill="#102A43">Browser</text><text x="642" y="248" text-anchor="middle" fill="#102A43">Server</text>
+<line x1="182" y1="268" x2="182" y2="594" stroke="#CAD7E2" stroke-width="2" /><line x1="642" y1="268" x2="642" y2="594" stroke="#CAD7E2" stroke-width="2" />
+<line x1="184" y1="308" x2="636" y2="308" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="296" text-anchor="middle" font-size="20" fill="#526B80">Anything new?</text>
+<line x1="640" y1="358" x2="188" y2="358" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="412" y="347" text-anchor="middle" font-size="20" fill="#526B80">No changes</text>
+<text x="213" y="404" font-size="20" fill="#B36A13">Wait for the interval</text>
+<line x1="184" y1="447" x2="636" y2="447" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="435" text-anchor="middle" font-size="20" fill="#526B80">Anything new?</text>
+<line x1="640" y1="500" x2="188" y2="500" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="488" text-anchor="middle" font-size="20" fill="#15836B">New data</text>
+<text x="213" y="567" font-size="20" fill="#526B80">Repeat</text><text x="76" y="594" font-size="14" fill="#526B80">TIME ↓</text>
+</g>
+<g id="explanation" data-pptx-bounds="820 219 396 388">
+<rect x="820" y="222" width="4" height="370" fill="#CAD7E2" />
+<text x="852" y="265" font-size="32" font-weight="600" fill="#102A43">Ask at regular<tspan x="852" dy="42">intervals.</tspan></text>
+<text x="852" y="389" fill="#243B53">Simple HTTP</text><text x="852" y="449" fill="#243B53">Empty responses</text>
+<text x="852" y="533" font-size="20" fill="#B36A13">SHORTER INTERVAL</text><text x="852" y="570" font-size="20" fill="#526B80">Less delay · More requests</text>
+</g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">06 / 12</text></g>
+</svg>

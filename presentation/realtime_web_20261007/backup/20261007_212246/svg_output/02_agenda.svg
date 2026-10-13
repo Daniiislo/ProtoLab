@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="toc">
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1100 112"><text x="64" y="88" font-size="20" fill="#007F9E">THE ROADMAP</text><text x="64" y="148" font-size="48" font-weight="600" fill="#102A43">Agenda</text></g>
+<g id="part1" data-pptx-bounds="64 208 1130 83"><text x="64" y="256" font-size="32" fill="#007F9E">01</text><text x="157" y="256" font-size="32" fill="#102A43">Pain Points &amp; Approach</text><line x1="158" y1="286" x2="1190" y2="286" stroke="#CAD7E2" /></g>
+<g id="part2" data-pptx-bounds="64 312 1130 83"><text x="64" y="360" font-size="32" fill="#007F9E">02</text><text x="157" y="360" font-size="32" fill="#102A43">Real-time Communication Methods</text><line x1="158" y1="390" x2="1190" y2="390" stroke="#CAD7E2" /></g>
+<g id="part3" data-pptx-bounds="64 416 1130 83"><text x="64" y="464" font-size="32" fill="#007F9E">03</text><text x="157" y="464" font-size="32" fill="#102A43">Lessons Learned &amp; Trade-offs</text><line x1="158" y1="494" x2="1190" y2="494" stroke="#CAD7E2" /></g>
+<g id="part4" data-pptx-bounds="64 520 1130 83" font-size="32"><text x="64" y="568" fill="#007F9E">04</text><text x="157" y="568" fill="#102A43">Demo &amp; Q&amp;A</text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">02 / 12</text></g>
+</svg>

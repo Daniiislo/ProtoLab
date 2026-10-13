@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1140 112" font-weight="600"><text x="64" y="88" font-size="32" fill="#007F9E">01 / PAIN POINTS &amp; APPROACH</text><text x="64" y="148" font-size="48" fill="#102A43">Why Does Chat Feel Slow?</text></g>
+<g id="chat-scene" data-pptx-bounds="64 216 1152 292">
+<rect x="66" y="230" width="316" height="254" rx="12" fill="#FFFFFF" stroke="#CAD7E2" stroke-width="2" /><text x="90" y="270" font-size="20" fill="#526B80">MEMBER A</text><line x1="66" y1="289" x2="382" y2="289" stroke="#CAD7E2" />
+<rect x="124" y="316" width="230" height="62" rx="12" fill="#E8F4F8" /><text x="148" y="355" font-size="20" fill="#102A43">Hey, are you there?</text><text x="352" y="411" text-anchor="end" font-size="20" fill="#15836B">Sent</text>
+<line x1="398" y1="342" x2="518" y2="342" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" />
+<rect x="543" y="280" width="170" height="124" rx="12" fill="#102A43" /><use data-icon="tabler-outline/server" x="602" y="296" width="48" height="48" fill="#FFFFFF" /><text x="628" y="383" text-anchor="middle" font-size="20" fill="#FFFFFF">Server</text>
+<line x1="735" y1="342" x2="858" y2="342" stroke="#CAD7E2" stroke-width="3" stroke-dasharray="8 8" />
+<rect x="880" y="230" width="332" height="254" rx="12" fill="#FFFFFF" stroke="#CAD7E2" stroke-width="2" /><text x="904" y="270" font-size="20" fill="#526B80">MEMBER B</text><line x1="880" y1="289" x2="1212" y2="289" stroke="#CAD7E2" />
+<circle cx="1018" cy="349" r="5" fill="#CAD7E2" /><circle cx="1046" cy="349" r="5" fill="#CAD7E2" /><circle cx="1074" cy="349" r="5" fill="#CAD7E2" /><text x="1046" y="410" text-anchor="middle" fill="#B36A13">Still waiting</text>
+</g>
+<g id="approach" data-pptx-bounds="64 545 1152 80"><rect x="64" y="545" width="1152" height="80" rx="12" fill="#E8F4F8" /><text x="92" y="595" font-size="32" font-weight="600" fill="#007F9E">WebSocket</text><text x="334" y="594" fill="#102A43">Keep the conversation open.</text><use data-icon="tabler-outline/message-circle" x="1138" y="568" width="36" height="36" fill="#007F9E" /></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">04 / 12</text></g>
+</svg>

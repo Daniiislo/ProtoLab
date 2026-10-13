@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="ending">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="closing-title" data-pptx-bounds="58 100 1154 250"><rect x="64" y="108" width="58" height="6" fill="#007F9E" /><text x="64" y="168" font-size="32" fill="#007F9E" font-weight="600">04 / SEE IT IN ACTION</text><text x="60" y="287" font-size="72" font-weight="600" fill="#102A43">Demo &amp; Q&amp;A</text></g>
+<g id="closing-prompt" data-pptx-bounds="64 355 1152 75"><text x="64" y="400" font-size="32" fill="#526B80">Watch the connection. Follow the messages.</text></g>
+<g id="methods" data-pptx-bounds="64 477 1152 104"><line x1="80" y1="493" x2="1188" y2="493" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" />
+<circle cx="96" cy="493" r="7" fill="#007F9E" /><circle cx="392" cy="493" r="7" fill="#007F9E" /><circle cx="729" cy="493" r="7" fill="#007F9E" /><circle cx="1002" cy="493" r="7" fill="#007F9E" />
+<text x="64" y="560" fill="#102A43">Polling</text><text x="327" y="560" fill="#102A43">Long Polling</text><text x="697" y="560" fill="#102A43">SSE</text><text x="940" y="560" fill="#102A43">WebSocket</text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">12 / 12</text></g>
+</svg>

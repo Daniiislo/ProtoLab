@@ -1,0 +1,463 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "early",
+  "target": "F:\\ProtoLab\\presentation\\realtime_web_20261007",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "9b63803759376270ecd4ad2ab63d1da8414448a663d064263b34b6e65d48b32e",
+    "file_count": 5,
+    "files": [
+      {
+        "file": "01_cover.svg",
+        "sha256": "a22bac0a5068db3cfe3bd8c058e1e5848437f38bdd726396d83c5d58321d0ca9"
+      },
+      {
+        "file": "02_agenda.svg",
+        "sha256": "ef9c146d26815bc3bdf23fc5b3303b305ed8bfc2c07a3a66d1c80ed16f043502"
+      },
+      {
+        "file": "03_notifications.svg",
+        "sha256": "1871c04656ff7eda348d597ca6c1fa8ebe9b19f047aa5e2f51c295a989e13261"
+      },
+      {
+        "file": "04_chat.svg",
+        "sha256": "9126aa18b90af5114a7c89a531b62b1d633efcd5e1191506be9c4d8bbc21568f"
+      },
+      {
+        "file": "05_overview.svg",
+        "sha256": "96028924ca76f208600b2aede5b585aa43f5d50509bccf541ebcf36f3c7ef477"
+      }
+    ]
+  },
+  "summary": {
+    "total": 5,
+    "passed": 0,
+    "warnings": 5,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 9,
+      "issues": [
+        {
+          "file": "01_cover.svg",
+          "message": "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[26]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)"
+        },
+        {
+          "file": "01_cover.svg",
+          "message": "<text> (x=60, y=260; text='Real-timeCommunicati…') exceeds <g id=\"headline\"> data-pptx-bounds on the horizontal axis: content (60.0, 198.8)-(632.5, 461.2), container (64.0, 80.0)-(894.0, 500.0), overflow horizontal 0.5%, vertical 0.0% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text; ≈44.0 px per Latin char at 72px incl. headroom; ≈18 chars fit in 830 px"
+        },
+        {
+          "file": "02_agenda.svg",
+          "message": "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (9 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): part4:font-size None -> '32'; text[19]:font-size '32' -> None; text[20]:font-size '32' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)"
+        },
+        {
+          "file": "02_agenda.svg",
+          "message": "<text> (x=64, y=148; text='Agenda') exceeds <g id=\"title\"> data-pptx-bounds on the vertical axis: content (64.0, 107.2)-(250.2, 164.8), container (64.0, 58.0)-(1164.0, 162.0), overflow horizontal 0.0%, vertical 2.7% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+        },
+        {
+          "file": "03_notifications.svg",
+          "message": "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[34]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)"
+        },
+        {
+          "file": "03_notifications.svg",
+          "message": "<text> (x=64, y=148; text='Why Are Notification…') exceeds <g id=\"title\"> data-pptx-bounds on the vertical axis: content (64.0, 107.2)-(738.2, 164.8), container (64.0, 58.0)-(1204.0, 162.0), overflow horizontal 0.0%, vertical 2.7% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+        },
+        {
+          "file": "04_chat.svg",
+          "message": "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[34]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)"
+        },
+        {
+          "file": "04_chat.svg",
+          "message": "<text> (x=64, y=148; text='Why Does Chat Feel S…') exceeds <g id=\"title\"> data-pptx-bounds on the vertical axis: content (64.0, 107.2)-(699.6, 164.8), container (64.0, 58.0)-(1204.0, 162.0), overflow horizontal 0.0%, vertical 2.7% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+        },
+        {
+          "file": "05_overview.svg",
+          "message": "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[34]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)"
+        }
+      ]
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "carrier_receipt": {
+    "scope": "informational-not-a-quota",
+    "pages": 5,
+    "totals": {
+      "text_elements": 63,
+      "image_placements": 0,
+      "icons": 6,
+      "svg_geometry_elements": 43,
+      "preset_shapes": 0,
+      "page_frame_elements": 5,
+      "marker_uses": 4,
+      "inline_emphasis_runs": 1,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "pages_with": {
+      "images": 0,
+      "icons": 2,
+      "presets": 0,
+      "charts": 0,
+      "tables": 0,
+      "formulas": 0,
+      "inline_emphasis_runs": 1,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "relationship_pages": 0,
+    "geometry_elements": {
+      "circle": 10,
+      "ellipse": 0,
+      "line": 15,
+      "path": 0,
+      "polygon": 0,
+      "polyline": 0,
+      "rect": 18
+    },
+    "preset_names": {},
+    "native_objects": {
+      "chart": 0,
+      "formula_block": 0,
+      "formula_inline": 0,
+      "other": 0,
+      "table": 0
+    },
+    "image_page_max_frame_share_range": []
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_cover.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\01_cover.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[26]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)",
+        "<text> (x=60, y=260; text='Real-timeCommunicati…') exceeds <g id=\"headline\"> data-pptx-bounds on the horizontal axis: content (60.0, 198.8)-(632.5, 461.2), container (64.0, 80.0)-(894.0, 500.0), overflow horizontal 0.5%, vertical 0.0% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text; ≈44.0 px per Latin char at 72px incl. headroom; ≈18 chars fit in 830 px"
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 7,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 4,
+              "circle": 3,
+              "ellipse": 0,
+              "line": 3,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 2
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 7,
+        "tspan_elements": 2
+      },
+      "passed": true,
+      "source_sha256": "a22bac0a5068db3cfe3bd8c058e1e5848437f38bdd726396d83c5d58321d0ca9"
+    },
+    {
+      "file": "02_agenda.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\02_agenda.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (9 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): part4:font-size None -> '32'; text[19]:font-size '32' -> None; text[20]:font-size '32' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)",
+        "<text> (x=64, y=148; text='Agenda') exceeds <g id=\"title\"> data-pptx-bounds on the vertical axis: content (64.0, 107.2)-(250.2, 164.8), container (64.0, 58.0)-(1164.0, 162.0), overflow horizontal 0.0%, vertical 2.7% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 12,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 1,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 3,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "ef9c146d26815bc3bdf23fc5b3303b305ed8bfc2c07a3a66d1c80ed16f043502"
+    },
+    {
+      "file": "03_notifications.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\03_notifications.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[34]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)",
+        "<text> (x=64, y=148; text='Why Are Notification…') exceeds <g id=\"title\"> data-pptx-bounds on the vertical axis: content (64.0, 107.2)-(738.2, 164.8), container (64.0, 58.0)-(1204.0, 162.0), overflow horizontal 0.0%, vertical 2.7% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 13,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 4,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 4,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 1
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 13,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "1871c04656ff7eda348d597ca6c1fa8ebe9b19f047aa5e2f51c295a989e13261"
+    },
+    {
+      "file": "04_chat.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\04_chat.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[34]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)",
+        "<text> (x=64, y=148; text='Why Does Chat Feel S…') exceeds <g id=\"title\"> data-pptx-bounds on the vertical axis: content (64.0, 107.2)-(699.6, 164.8), container (64.0, 58.0)-(1204.0, 162.0), overflow horizontal 0.0%, vertical 2.7% (error above 5%); expand the root module bounds into available non-overlapping space; otherwise reflow the text"
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 12,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 2,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 3,
+              "ellipse": 0,
+              "line": 4,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 1
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "9126aa18b90af5114a7c89a531b62b1d633efcd5e1191506be9c4d8bbc21568f"
+    },
+    {
+      "file": "05_overview.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\05_overview.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Noncanonical compact authoring: Authoring SVG contains noncanonical or redundant inherited style declarations (6 change(s)); examples (group:attr None -> value hoists the shared value onto that group; child:attr value -> None drops the copy the child now inherits): footer:fill None -> '#526B80'; footer:font-size None -> '14'; text[34]:fill '#526B80' -> None (advisory; normalize with `python3 scripts/compact_svg_styles.py <svg_output> --inplace`, re-stamp pages that carry Chart/Table fallbacks, and rerun the final gate, or leave the explicit form)"
+      ],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 19,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 1,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 1,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 19,
+        "tspan_elements": 2
+      },
+      "passed": true,
+      "source_sha256": "96028924ca76f208600b2aede5b585aa43f5d50509bccf541ebcf36f3c7ef477"
+    }
+  ]
+}

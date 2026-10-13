@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1152 112"><text x="64" y="88" font-size="20" fill="#007F9E">03 / LESSONS LEARNED &amp; TRADE-OFFS</text><text x="64" y="148" font-size="48" font-weight="600" fill="#102A43">Build for Disconnects</text></g>
+<g id="recovery-path" data-pptx-bounds="64 220 1152 246">
+<use data-icon="tabler-outline/wifi-off" x="198" y="238" width="72" height="72" fill="#B36A13" /><text x="234" y="368" text-anchor="middle" font-size="32" font-weight="600" fill="#102A43">Disconnect</text><text x="234" y="421" text-anchor="middle" fill="#526B80">Show state</text>
+<line x1="368" y1="276" x2="500" y2="276" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" />
+<use data-icon="tabler-outline/refresh" x="600" y="238" width="72" height="72" fill="#007F9E" /><text x="636" y="368" text-anchor="middle" font-size="32" font-weight="600" fill="#102A43">Reconnect</text><text x="636" y="421" text-anchor="middle" fill="#526B80">Backoff + jitter</text>
+<line x1="770" y1="276" x2="902" y2="276" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" />
+<use data-icon="tabler-outline/database" x="1002" y="238" width="72" height="72" fill="#15836B" /><text x="1038" y="368" text-anchor="middle" font-size="32" font-weight="600" fill="#102A43">Recover</text><text x="1038" y="421" text-anchor="middle" fill="#526B80">Resume + deduplicate</text>
+</g>
+<g id="principle" data-pptx-bounds="64 516 1152 110"><rect x="64" y="516" width="1152" height="110" rx="12" fill="#102A43" /><text x="96" y="578" font-size="32" font-weight="600" fill="#FFFFFF">Reconnect ≠ recovery.</text><text x="735" y="579" fill="#FFFFFF">Persist important events.</text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">10 / 12</text></g>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="cover">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><polygon points="0,0 10,5 0,10" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="headline" data-pptx-bounds="58 80 836 420">
+<rect x="64" y="84" width="58" height="6" fill="#007F9E" />
+<text x="64" y="140" font-size="20" fill="#007F9E">A PRACTICAL DEVELOPER’S GUIDE</text>
+<text x="60" y="260" font-size="72" font-weight="600" fill="#102A43">Real-time<tspan x="60" dy="88">Communication</tspan><tspan x="60" dy="88">on the Web</tspan></text>
+</g>
+<g id="signal" data-pptx-bounds="920 180 300 342">
+<rect x="955" y="188" width="230" height="132" rx="12" fill="#FFFFFF" stroke="#102A43" stroke-width="3" />
+<line x1="956" y1="222" x2="1184" y2="222" stroke="#CAD7E2" stroke-width="2" />
+<circle cx="974" cy="204" r="4" fill="#007F9E" /><circle cx="990" cy="204" r="4" fill="#CAD7E2" /><circle cx="1006" cy="204" r="4" fill="#CAD7E2" />
+<text x="1070" y="279" text-anchor="middle" fill="#102A43">Browser</text>
+<line x1="1040" y1="338" x2="1040" y2="404" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" />
+<line x1="1100" y1="414" x2="1100" y2="348" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" />
+<rect x="955" y="438" width="230" height="74" rx="12" fill="#102A43" />
+<text x="1070" y="484" text-anchor="middle" fill="#FFFFFF">Server</text>
+</g>
+<g id="subtitle" data-pptx-bounds="64 552 820 65"><text x="64" y="591" font-size="32" fill="#526B80">Notifications. Messages. Less waiting.</text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">01 / 12</text></g>
+</svg>

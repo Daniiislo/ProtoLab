@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1152 112"><text x="64" y="88" font-size="20" fill="#007F9E">03 / LESSONS LEARNED &amp; TRADE-OFFS</text><text x="64" y="148" font-size="48" font-weight="600" fill="#102A43">Choose What Fits</text></g>
+<g id="choices" data-pptx-bounds="64 220 690 292">
+<text x="64" y="270" font-size="32" fill="#526B80">Periodic updates</text><line x1="353" y1="260" x2="431" y2="260" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="470" y="270" font-size="32" font-weight="600" fill="#102A43">Polling</text>
+<line x1="64" y1="310" x2="727" y2="310" stroke="#CAD7E2" />
+<text x="64" y="366" font-size="32" fill="#526B80">Server push</text><line x1="353" y1="356" x2="431" y2="356" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="470" y="366" font-size="32" font-weight="600" fill="#007F9E">SSE</text>
+<line x1="64" y1="406" x2="727" y2="406" stroke="#CAD7E2" />
+<text x="64" y="462" font-size="32" fill="#526B80">Interactive</text><line x1="353" y1="452" x2="431" y2="452" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="470" y="462" font-size="32" font-weight="600" fill="#007F9E">WebSocket</text>
+</g>
+<g id="guardrails" data-pptx-bounds="800 220 416 302"><rect x="800" y="220" width="416" height="302" rx="12" fill="#E8F4F8" />
+<use data-icon="tabler-outline/refresh" x="832" y="254" width="38" height="38" fill="#007F9E" /><text x="892" y="282" fill="#102A43">Reuse connections</text><text x="832" y="329" font-size="20" fill="#526B80">Not one per widget.</text>
+<use data-icon="tabler-outline/shield-check" x="832" y="372" width="38" height="38" fill="#007F9E" /><text x="892" y="400" fill="#102A43">Authorize actions</text><text x="832" y="447" font-size="20" fill="#526B80">Never trust client-supplied rooms.</text>
+</g>
+<g id="tradeoff" data-pptx-bounds="64 555 1152 70"><text x="64" y="598" font-size="32" fill="#102A43">Less polling. <tspan fill="#007F9E" font-weight="600">More connection management.</tspan></text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">11 / 12</text></g>
+</svg>

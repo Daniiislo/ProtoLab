@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1152 112" font-weight="600"><text x="64" y="88" font-size="32" fill="#007F9E">02 / METHODS · 3 OF 4</text><text x="64" y="148" font-size="48" fill="#102A43">Server-Sent Events</text></g>
+<g id="sequence" data-pptx-bounds="64 211 710 421">
+<text x="182" y="248" text-anchor="middle" fill="#102A43">Browser</text><text x="642" y="248" text-anchor="middle" fill="#102A43">Server</text>
+<rect x="170" y="334" width="484" height="244" rx="12" fill="#E8F4F8" />
+<line x1="182" y1="268" x2="182" y2="580" stroke="#CAD7E2" stroke-width="2" /><line x1="642" y1="268" x2="642" y2="580" stroke="#CAD7E2" stroke-width="2" />
+<line x1="184" y1="307" x2="636" y2="307" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="412" y="295" text-anchor="middle" font-size="20" fill="#526B80">Open an HTTP event stream</text>
+<line x1="640" y1="387" x2="188" y2="387" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="375" text-anchor="middle" font-size="20" fill="#007F9E">New reply</text>
+<line x1="640" y1="467" x2="188" y2="467" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="455" text-anchor="middle" font-size="20" fill="#007F9E">New mention</text>
+<line x1="640" y1="547" x2="188" y2="547" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="535" text-anchor="middle" font-size="20" fill="#007F9E">Unread count</text>
+<text x="412" y="614" text-anchor="middle" font-size="20" fill="#526B80">Client actions → separate HTTP requests</text><text x="76" y="572" font-size="14" fill="#526B80">TIME ↓</text>
+</g>
+<g id="explanation" data-pptx-bounds="820 219 396 407"><rect x="820" y="222" width="4" height="392" fill="#007F9E" />
+<text font-weight="600" fill="#102A43" font-size="32" x="852" y="265">One open stream.</text><text font-weight="600" fill="#102A43" font-size="32" x="852" y="307">Server to browser.</text><g transform="translate(852, 346) scale(1.5)" fill="none" stroke="#007F9E" stroke-width="2">
+    <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+    <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+  </g><text x="902" y="373" font-size="20" fill="#007F9E">FORUM NOTIFICATIONS</text>
+<text x="852" y="440" fill="#243B53">Auto-reconnect</text><text x="852" y="474" font-size="20" fill="#526B80">With EventSource</text>
+<text x="852" y="548" font-size="20" fill="#B36A13">RECONNECT ≠ REPLAY</text><text x="852" y="585" font-size="20" fill="#526B80">Recover missed events</text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">08 / 12</text></g>
+</svg>

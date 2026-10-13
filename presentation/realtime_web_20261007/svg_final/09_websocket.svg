@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" font-family="Segoe UI" font-size="28" data-pptx-page-role="content">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0,0 8,4 0,8" fill="#007F9E" /></marker></defs>
+<rect id="background" data-pptx-role="background" width="1280" height="720" fill="#F7F9FC" />
+<g id="title" data-pptx-bounds="64 58 1152 112" font-weight="600"><text x="64" y="88" font-size="32" fill="#007F9E">02 / METHODS · 4 OF 4</text><text x="64" y="148" font-size="48" fill="#102A43">WebSocket</text></g>
+<g id="sequence" data-pptx-bounds="64 211 710 421">
+<text x="182" y="248" text-anchor="middle" fill="#102A43">Browser</text><text x="642" y="248" text-anchor="middle" fill="#102A43">Server</text>
+<rect x="170" y="352" width="484" height="240" rx="12" fill="#E8F4F8" />
+<line x1="182" y1="268" x2="182" y2="590" stroke="#CAD7E2" stroke-width="2" /><line x1="642" y1="268" x2="642" y2="590" stroke="#CAD7E2" stroke-width="2" />
+<line x1="184" y1="297" x2="636" y2="297" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="412" y="285" text-anchor="middle" font-size="20" fill="#526B80">Connect</text>
+<line x1="640" y1="334" x2="188" y2="334" stroke="#007F9E" stroke-width="2" marker-end="url(#arrow)" /><text x="412" y="323" text-anchor="middle" font-size="20" fill="#526B80">Connection established</text>
+<line x1="184" y1="397" x2="636" y2="397" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="385" text-anchor="middle" font-size="20" fill="#007F9E">Send a message</text>
+<line x1="640" y1="467" x2="188" y2="467" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="455" text-anchor="middle" font-size="20" fill="#007F9E">Receive a message</text>
+<line x1="184" y1="537" x2="636" y2="537" stroke="#007F9E" stroke-width="3" marker-end="url(#arrow)" /><text x="412" y="525" text-anchor="middle" font-size="20" fill="#007F9E">Typing…</text>
+<text x="412" y="620" text-anchor="middle" font-size="20" fill="#526B80">Both sides can send independently</text><text x="76" y="579" font-size="14" fill="#526B80">TIME ↓</text>
+</g>
+<g id="explanation" data-pptx-bounds="820 219 396 407"><rect x="820" y="222" width="4" height="392" fill="#007F9E" />
+<text font-weight="600" fill="#102A43" font-size="32" x="852" y="265">One connection.</text><text font-weight="600" fill="#102A43" font-size="32" x="852" y="307">Both directions.</text><g transform="translate(852, 346) scale(1.5)" fill="none" stroke="#007F9E" stroke-width="2">
+    <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1" />
+  </g><text x="902" y="373" font-size="20" fill="#007F9E">MEMBER CHAT</text>
+<text x="852" y="440" fill="#243B53">Messages + typing</text><text x="852" y="474" font-size="20" fill="#526B80">No new request per message</text>
+<text x="852" y="548" font-size="20" fill="#B36A13">SENT ≠ DELIVERED ≠ READ</text><text x="852" y="585" font-size="20" fill="#526B80">Delivery is application logic</text></g>
+<g id="footer" data-pptx-bounds="64 659 1152 35" fill="#526B80" font-size="14"><text x="64" y="681">REAL-TIME COMMUNICATION ON THE WEB</text><text x="1216" y="681" text-anchor="end">09 / 12</text></g>
+</svg>

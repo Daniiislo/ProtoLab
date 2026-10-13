@@ -1,0 +1,846 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "F:\\ProtoLab\\presentation\\realtime_web_20261007",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "507aa6c30083c9441d844502b2cc8c3a5d371e64149533b7beaf8479ea5e2044",
+    "file_count": 12,
+    "files": [
+      {
+        "file": "01_cover.svg",
+        "sha256": "5981a7f0cf7b51e7c7f0709b29c8988938a451541aefd63cf3d67f6c2d502b59"
+      },
+      {
+        "file": "02_agenda.svg",
+        "sha256": "c071f949b969dfa2cbde07f4286ff99ffef1cc33a65ad7db37ec9cd5ec934652"
+      },
+      {
+        "file": "03_notifications.svg",
+        "sha256": "a5aaa1379388234bbda2adb343aca3e90fdbfabcd48dc8410e21af9ed2198652"
+      },
+      {
+        "file": "04_chat.svg",
+        "sha256": "55ec0a044c6ac1099f71bd5c768f0ca7466dcc6ef7a9921bed71d91ffc4db5e5"
+      },
+      {
+        "file": "05_overview.svg",
+        "sha256": "af45c81c46c76e7b55613e1a5242bacfe8db489bd2ebf5c6e620430638cc3a61"
+      },
+      {
+        "file": "06_polling.svg",
+        "sha256": "ae03ed4626aac248d3940239148cfa9c5b8a7abba054fa9aae236477458af0c2"
+      },
+      {
+        "file": "07_long_polling.svg",
+        "sha256": "7a93e5d6259134c13bf30e85f834a787c894f239ae4179975e2517cc91128b8e"
+      },
+      {
+        "file": "08_sse.svg",
+        "sha256": "ae890ab8c5cd4760452a9b2fb38ab2b1698e8def1f4639047cb90f19ce1a90fb"
+      },
+      {
+        "file": "09_websocket.svg",
+        "sha256": "6776281b4a18ebee9d02aaf6487037102477554c754c42c157395c3d2ef20775"
+      },
+      {
+        "file": "10_recovery.svg",
+        "sha256": "c66fa32f86c562ef65a4ad497a78deb355aa42c258a60bcef7456986b9698926"
+      },
+      {
+        "file": "11_choices.svg",
+        "sha256": "7c0ba5de9e677792b31fc1ab510aab23a7a39dde569f05ed0d9d96f687d65192"
+      },
+      {
+        "file": "12_demo.svg",
+        "sha256": "c6cfe393397bd9ee8bc2e2913a865fc627a001e4dfc038a2ddea1162bfc5a2d4"
+      }
+    ]
+  },
+  "summary": {
+    "total": 12,
+    "passed": 12,
+    "warnings": 0,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 0,
+      "issues": []
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "carrier_receipt": {
+    "scope": "informational-not-a-quota",
+    "pages": 12,
+    "totals": {
+      "text_elements": 170,
+      "image_placements": 0,
+      "icons": 13,
+      "svg_geometry_elements": 96,
+      "preset_shapes": 0,
+      "page_frame_elements": 12,
+      "marker_uses": 26,
+      "inline_emphasis_runs": 2,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "pages_with": {
+      "images": 0,
+      "icons": 6,
+      "presets": 0,
+      "charts": 0,
+      "tables": 0,
+      "formulas": 0,
+      "inline_emphasis_runs": 2,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "relationship_pages": 0,
+    "geometry_elements": {
+      "circle": 14,
+      "ellipse": 0,
+      "line": 47,
+      "path": 0,
+      "polygon": 0,
+      "polyline": 0,
+      "rect": 35
+    },
+    "preset_names": {},
+    "native_objects": {
+      "chart": 0,
+      "formula_block": 0,
+      "formula_inline": 0,
+      "other": 0,
+      "table": 0
+    },
+    "image_page_max_frame_share_range": []
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "01_cover.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\01_cover.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 6,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 4,
+              "circle": 3,
+              "ellipse": 0,
+              "line": 3,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 2
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 6,
+        "tspan_elements": 2
+      },
+      "passed": true,
+      "source_sha256": "5981a7f0cf7b51e7c7f0709b29c8988938a451541aefd63cf3d67f6c2d502b59"
+    },
+    {
+      "file": "02_agenda.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\02_agenda.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 12,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 1,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 3,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "c071f949b969dfa2cbde07f4286ff99ffef1cc33a65ad7db37ec9cd5ec934652"
+    },
+    {
+      "file": "03_notifications.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\03_notifications.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 13,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 4,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 4,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 1
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 13,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "a5aaa1379388234bbda2adb343aca3e90fdbfabcd48dc8410e21af9ed2198652"
+    },
+    {
+      "file": "04_chat.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\04_chat.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 12,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 2,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 6,
+              "circle": 3,
+              "ellipse": 0,
+              "line": 4,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 1
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "55ec0a044c6ac1099f71bd5c768f0ca7466dcc6ef7a9921bed71d91ffc4db5e5"
+    },
+    {
+      "file": "05_overview.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\05_overview.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 19,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 1,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 1,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 0
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 19,
+        "tspan_elements": 2
+      },
+      "passed": true,
+      "source_sha256": "af45c81c46c76e7b55613e1a5242bacfe8db489bd2ebf5c6e620430638cc3a61"
+    },
+    {
+      "file": "06_polling.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\06_polling.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 18,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 2,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 6,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 4
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 1
+      },
+      "passed": true,
+      "source_sha256": "ae03ed4626aac248d3940239148cfa9c5b8a7abba054fa9aae236477458af0c2"
+    },
+    {
+      "file": "07_long_polling.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\07_long_polling.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 17,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 3,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 5,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 3
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 17,
+        "tspan_elements": 1
+      },
+      "passed": true,
+      "source_sha256": "7a93e5d6259134c13bf30e85f834a787c894f239ae4179975e2517cc91128b8e"
+    },
+    {
+      "file": "08_sse.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\08_sse.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 18,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 3,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 6,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 4
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 18,
+        "tspan_elements": 1
+      },
+      "passed": true,
+      "source_sha256": "ae890ab8c5cd4760452a9b2fb38ab2b1698e8def1f4639047cb90f19ce1a90fb"
+    },
+    {
+      "file": "09_websocket.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\09_websocket.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 19,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 1,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 3,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 7,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 5
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 19,
+        "tspan_elements": 1
+      },
+      "passed": true,
+      "source_sha256": "6776281b4a18ebee9d02aaf6487037102477554c754c42c157395c3d2ef20775"
+    },
+    {
+      "file": "10_recovery.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\10_recovery.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 12,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 3,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 2,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 2,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 2
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 12,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "c66fa32f86c562ef65a4ad497a78deb355aa42c258a60bcef7456986b9698926"
+    },
+    {
+      "file": "11_choices.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\11_choices.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 15,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 2,
+          "effects": {
+            "inline_emphasis_runs": 1,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 2,
+              "circle": 0,
+              "ellipse": 0,
+              "line": 5,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 3
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 15,
+        "tspan_elements": 1
+      },
+      "passed": true,
+      "source_sha256": "7c0ba5de9e677792b31fc1ab510aab23a7a39dde569f05ed0d9d96f687d65192"
+    },
+    {
+      "file": "12_demo.svg",
+      "path": "F:\\ProtoLab\\presentation\\realtime_web_20261007\\svg_output\\12_demo.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "viewbox": "0 0 1280 720",
+        "carrier_receipt": {
+          "text_elements": 9,
+          "images": {
+            "placements": 0,
+            "files": [],
+            "max_frame_share": 0.0
+          },
+          "icons": 0,
+          "effects": {
+            "inline_emphasis_runs": 0,
+            "gradient_uses": 0,
+            "filter_uses": 0,
+            "text_effects": 0
+          },
+          "geometry": {
+            "svg_elements": {
+              "rect": 2,
+              "circle": 4,
+              "ellipse": 0,
+              "line": 1,
+              "polyline": 0,
+              "polygon": 0,
+              "path": 0
+            },
+            "preset_shapes": 0,
+            "preset_names": {},
+            "page_frame_elements": 1,
+            "marker_uses": {
+              "start": 0,
+              "mid": 0,
+              "end": 1
+            }
+          },
+          "native_objects": {
+            "chart": 0,
+            "table": 0,
+            "formula_block": 0,
+            "formula_inline": 0,
+            "other": 0
+          }
+        },
+        "fonts": [
+          "Segoe UI"
+        ],
+        "text_elements": 9,
+        "tspan_elements": 0
+      },
+      "passed": true,
+      "source_sha256": "c6cfe393397bd9ee8bc2e2913a865fc627a001e4dfc038a2ddea1162bfc5a2d4"
+    }
+  ]
+}

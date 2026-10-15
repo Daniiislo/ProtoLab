@@ -3,37 +3,47 @@
 
 :root {
   color-scheme: light;
-  --background: #f5f4ee;
-  --surface: #fffefa;
-  --foreground: #202d28;
-  --muted: #626d66;
-  --line: #dcded4;
-  --soft: #eeefe7;
-  --primary: #17624c;
-  --primary-hover: #104b3a;
-  --tint: #e5eee7;
+  /* Tailwind slate (trung tính) + cyan-700, gần màu nhấn #007F9E của slide.
+     --background chỉ dành cho nền trang; thứ nằm trong thẻ dùng --surface hoặc --soft. */
+  --background: #cad5e2; /* slate-300 */
+  --surface: #ffffff;
+  --foreground: #0f172b; /* slate-900 */
+  --muted: #45556c; /* slate-600 */
+  /* Viền ngoài thẻ (trên nền trang) đậm; viền trong thẻ nhạt. Thẻ gán lại --line ở cuối file. */
+  --line-strong: #90a1b9; /* slate-400 */
+  --line-weak: #cad5e2; /* slate-300 */
+  --line: var(--line-strong);
+  --soft: #f1f5f9; /* slate-100 */
+  --field: #62748e; /* slate-500: viền ô nhập, cần >= 3:1 */
+  --primary: #007595; /* cyan-700 */
+  --primary-hover: #005f78; /* cyan-800 */
+  --tint: #cefafe; /* cyan-100 */
   --on-primary: #ffffff;
   --danger: #aa302f;
   --danger-bg: #fff0ed;
-  --ring: #17624c;
+  --ring: #007595;
+  --shadow: 0 1px 2px rgb(15 23 43 / 0.1), 0 6px 16px rgb(15 23 43 / 0.08);
   --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --background: #141b18;
-    --surface: #1d2520;
-    --foreground: #e7ece5;
-    --muted: #a8b2a9;
-    --line: #3c4940;
-    --soft: #253027;
-    --primary: #95d3ad;
-    --primary-hover: #b3e6c6;
-    --tint: #263e30;
-    --on-primary: #10251b;
+    --background: #020618; /* slate-950 */
+    --surface: #1d293d; /* slate-800 */
+    --foreground: #f8fafc; /* slate-50 */
+    --muted: #cad5e2; /* slate-300 */
+    --line-strong: #45556c; /* slate-600 */
+    --line-weak: #45556c;
+    --soft: #314158; /* slate-700 */
+    --field: #90a1b9; /* slate-400 */
+    --primary: #43bdd4; /* cyan dịu, oklch(74% 0.11 213) */
+    --primary-hover: #64cbe1;
+    --tint: #104357;
+    --on-primary: #020618;
     --danger: #ffa49e;
     --danger-bg: #3b2624;
-    --ring: #95d3ad;
+    --ring: #43bdd4;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 6px 16px rgb(0 0 0 / 0.35);
   }
 }
 @theme inline {
@@ -245,7 +255,7 @@ p {
   margin-bottom: 0.65rem;
 }
 .experiment-number {
-  color: var(--primary);
+  color: var(--primary-hover);
   font-weight: 600;
 }
 .eyebrow-divider {
@@ -1114,12 +1124,13 @@ textarea::placeholder {
 .input,
 input,
 textarea {
-  border-color: #829087;
+  border-color: var(--field);
 }
-@media (prefers-color-scheme: dark) {
-  .input,
-  input,
-  textarea {
-    border-color: #879b8c;
-  }
+
+/* Thẻ nổi khỏi nền trang: viền ngoài đậm + bóng; bên trong thẻ dùng viền nhạt. */
+.experiment-panel,
+.activity-panel {
+  --line: var(--line-weak);
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow);
 }

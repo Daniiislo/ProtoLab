@@ -19,7 +19,7 @@ Real-time trong buổi này là trải nghiệm cập nhật với độ trễ t
 1. **Pain Points & Approach** — Hai tình huống mở đầu và hướng xử lý.
 2. **Real-time Communication Methods** — Polling, Long Polling, SSE, WebSocket.
 3. **Lessons Learned & Trade-offs** — Xử lý mất kết nối và chọn giải pháp vừa đủ.
-4. **Demo & Q&A** — Quan sát hành vi thực tế, giải đáp câu hỏi.
+4. **Demo - Q&A** — Quan sát hành vi thực tế, giải đáp câu hỏi.
 
 ## 3. Nội dung theo 12 slide
 
@@ -138,22 +138,57 @@ Vì phản hồi xác nhận có thể bị mất, retry đôi khi đưa cùng t
 
 ### Slide 11 — Choose What Fits
 
-Ba dòng trên slide là điểm khởi đầu lựa chọn, không phải luật tuyệt đối:
+Slide có ba phần: bốn dòng "nhu cầu → phương thức" (bên trái), thẻ **Best practice** và thẻ **Avoid** (bên phải), rồi câu chốt. Bốn dòng bên trái là điểm khởi đầu lựa chọn, không phải luật tuyệt đối. Slide không ghi chi phí của từng phương thức, nên phần đó nói bằng lời:
 
-- Cập nhật định kỳ, chấp nhận chờ: polling có thể đủ.
-- Chủ yếu đẩy sự kiện từ server: cân nhắc SSE.
-- Tương tác hai chiều thường xuyên: cân nhắc WebSocket.
+| Nhu cầu (trên slide) | Bắt đầu với | Nói thêm bằng lời (không có trên slide) |
+| --- | --- | --- |
+| Periodic updates | Polling | Đơn giản, nhưng phần lớn request không có gì mới |
+| Earlier updates | Long polling | Cập nhật sớm hơn, nhưng phải giữ request và xử lý timeout |
+| Server push | SSE | Một chiều; lấy lại sự kiện bị lỡ là việc của ứng dụng |
+| Two-way interaction | WebSocket | Hai chiều, nhưng reconnect và mở rộng quy mô là việc của ứng dụng |
 
-Long polling vẫn là lựa chọn khi cần cập nhật sớm trong kiến trúc request/response, hoặc khi các phương án khác không phù hợp với hạ tầng. Không có tên ở ba dòng tóm tắt không có nghĩa đã lỗi thời.
+Long polling vẫn là lựa chọn khi các phương án khác không phù hợp với hạ tầng; đó là lý do nó có một dòng riêng.
 
-Hai guardrail:
+#### Best practice và Avoid trên slide
 
-- **Reuse connections:** không mở một connection cho mỗi widget. Nếu đã có WebSocket dùng chung toàn app, có thể dùng luôn cho notifications; tách thêm SSE chỉ khi có lý do.
-- **Authorize actions:** server kiểm tra danh tính và quyền trong từng cuộc hội thoại/luồng dữ liệu. Room ID do client gửi chỉ là đầu vào, không phải bằng chứng được phép tham gia.
+Mỗi thẻ có hai ý, đều nói được trong khoảng 20 giây, không cần thuật ngữ, và không lặp slide 9, 10.
 
-**Trade-off:** giảm polling có thể giảm request không cần thiết, nhưng phải quản lý kết nối lâu dài, giới hạn tài nguyên, timeout và phục hồi. Nếu có nhiều server, cũng phải giải quyết cách chuyển event tới instance đang giữ kết nối của người nhận.
+| Best practice | Avoid |
+| --- | --- |
+| Start with the simplest that fits | Assuming the connection stays alive |
+| Share one connection per app | Polling every second to feel real-time |
 
-### Slide 12 — Demo & Q&A
+**Best practice**
+
+1. **Start with the simplest that fits.**
+   - *Nói:* "Đừng bắt đầu bằng thứ phức tạp nhất. Chậm vài giây không sao thì polling là đủ. Cần sớm hơn thì SSE. Cần hai chiều liên tục thì mới đến WebSocket."
+   - *Ví dụ:* bảng điểm cập nhật mỗi 10 giây không cần WebSocket.
+   - *Vì sao:* càng phức tạp, càng nhiều thứ phải tự quản lý. Đây cũng là ý của câu chốt "More connection management".
+2. **Share one connection per app.**
+   - *Nói:* "Mỗi kết nối mở là một thứ server phải giữ. Nếu ô thông báo, ô chat, ô trạng thái mỗi ô tự mở một kết nối thì sẽ rất nhanh quá nhiều. Hãy mở một kết nối và dùng chung."
+   - *Thêm nếu muốn:* với SSE trên HTTP/1.1, trình duyệt chỉ cho khoảng 6 kết nối cho mỗi domain ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)).
+
+**Avoid**
+
+1. **Assuming the connection stays alive.**
+   - *Nói:* "Đổi Wi-Fi, máy ngủ, đi qua proxy: kết nối có thể chết mà không ai báo. Hãy gửi định kỳ một tin nhỏ kiểu 'còn đó không?' để biết sớm."
+   - *Nguồn:* WebSocket có ping/pong để kiểm tra còn sống ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers)); với SSE, spec gợi ý gửi một dòng comment khoảng mỗi 15 giây ([WHATWG](https://html.spec.whatwg.org/multipage/server-sent-events.html)).
+2. **Polling every second to feel real-time.**
+   - *Nói:* "Hỏi mỗi giây nghe như thời gian thực, nhưng 1.000 người dùng nghĩa là 1.000 request mỗi giây, mà phần lớn câu trả lời chỉ là 'chưa có gì mới'. Nếu thật sự cần nhanh đến vậy, đó là dấu hiệu nên chuyển sang long polling hoặc SSE."
+   - *Ví dụ:* 1.000 người × 1 request/giây = 1.000 request/giây, kể cả khi cả ngày chỉ có vài thay đổi.
+   - *Ghi chú:* đây là phép tính, không cần nguồn. Nó nối về slide 6 (polling tốn request vô ích) và về chủ đề "chọn vừa đủ".
+
+**Ý dự phòng (đã bỏ khỏi slide, dùng khi cần nói thêm hoặc trả lời Q&A):**
+
+- **Check permissions on the server, always.** "Giống soát vé ở từng cửa, không chỉ cửa chính. Kết nối đã mở không có nghĩa người đó được xem mọi thứ." OWASP khuyên kiểm tra quyền cho từng hành động, không chỉ lúc kết nối ([OWASP](https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html)).
+- **WebSocket "just in case".** "WebSocket rất mạnh, nhưng bạn phải tự lo nối lại, xác nhận, và nhiều server. Chỉ cần server báo tin xuống thì SSE đơn giản hơn." Chat vẫn làm được bằng POST để gửi và SSE để nhận (xem Q&A "Chat có bắt buộc WebSocket?").
+- **Secrets in the URL.** "URL bị ghi vào log và lịch sử trình duyệt, đừng để token hay mật khẩu trong đó." (OWASP, cùng trang trên.)
+
+**Chỉ dùng khi bị hỏi sâu hơn (không đưa lên slide):** chặn client chậm làm đầy bộ nhớ server (giới hạn hàng đợi gửi); giới hạn kích thước và tần suất message; kiểm tra `Origin`; và reconnect có thêm độ ngẫu nhiên (jitter) để các client không cùng thử lại một lúc. Các ý này có nguồn ở mục 7.
+
+**Trade-off (câu chốt "Less polling. More connection management."):** giảm polling có thể giảm request không cần thiết, nhưng phải quản lý kết nối lâu dài, giới hạn tài nguyên, timeout và phục hồi. Nếu có nhiều server, cũng phải giải quyết cách chuyển event tới instance đang giữ kết nối của người nhận; đây là ý "scaling" ở dòng WebSocket, nói bằng lời chứ không đưa lên slide.
+
+### Slide 12 — Demo - Q&A
 
 Mục tiêu: cho người nghe thấy hành vi đường truyền, không chỉ thấy UI thay đổi.
 
@@ -212,5 +247,11 @@ Nếu demo chưa có reconnect/lấy bù, nói rõ đó là bài học thiết k
 - [WHATWG — Server-sent events](https://html.spec.whatwg.org/multipage/server-sent-events.html): reconnect và Last-Event-ID.
 - [RFC 6455 — The WebSocket Protocol](https://datatracker.ietf.org/doc/html/rfc6455): giao thức WebSocket và phục hồi sau đóng bất thường.
 - [MDN — WebSocket.send()](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/send): ý nghĩa của thao tác gửi.
+
+Nguồn cho slide 11 (best practice và avoid):
+
+- [OWASP — WebSocket Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html): kiểm tra quyền từng hành động, token và URL, giới hạn kích thước/tần suất, allowlist `Origin`.
+- [MDN — Writing WebSocket servers](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers): ping/pong, `Origin`.
+- [RFC 6202 — Known Issues and Best Practices for Bidirectional HTTP](https://datatracker.ietf.org/doc/html/rfc6202) và [AWS — Exponential Backoff And Jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/): cho phần Q&A sâu hơn (timeout long polling, jitter).
 
 Các ví dụ ID, quy trình lưu/lấy bù và lựa chọn kiến trúc là diễn giải thiết kế cho tình huống của buổi nói, không phải tuyên bố những tính năng này được giao thức tự bảo đảm.
